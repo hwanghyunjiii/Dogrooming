@@ -48,6 +48,12 @@ subprojects {
 }
 
 project(':Common') {
+    // jar 이름 지정
+    jar {
+        archivesBaseName = 'Dogrooming-Common'
+        archiveVersion = "0.0.1"
+    }
+
     // Common 모듈에만 필요한 라이브러리가 발생하면 이곳에 추가한다.
     dependencies {
     }
@@ -55,7 +61,10 @@ project(':Common') {
 
 project(':User') {
     // jar 이름 지정
-    jar { archivesBaseName = 'USER' }
+    jar {
+        archivesBaseName = 'Dogrooming-User'
+        archiveVersion = "0.0.1"
+    }
 
     // User 모듈에만 필요한 라이브러리가 발생하면 이곳에 추가한다.
     dependencies {
@@ -65,8 +74,10 @@ project(':User') {
 
 project(':Admin') {
     // jar 이름 지정
-    jar { archivesBaseName = 'ADMIN' }
-
+    jar {
+        archivesBaseName = 'Dogrooming-Admin'
+        archiveVersion = "0.0.1"
+    }
     // Admin 모듈에만 필요한 라이브러리가 발생하면 이곳에 추가한다.
     dependencies {
         compile project(':Common')
