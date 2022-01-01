@@ -54,6 +54,9 @@ project(':Common') {
 }
 
 project(':User') {
+    // jar 이름 지정
+    jar { archivesBaseName = 'USER' }
+
     // User 모듈에만 필요한 라이브러리가 발생하면 이곳에 추가한다.
     dependencies {
         compile project(':Common')
@@ -61,8 +64,12 @@ project(':User') {
 }
 
 project(':Admin') {
+    // jar 이름 지정
+    jar { archivesBaseName = 'ADMIN' }
+
     // Admin 모듈에만 필요한 라이브러리가 발생하면 이곳에 추가한다.
     dependencies {
         compile project(':Common')
     }
 }
+

@@ -10,7 +10,7 @@ public class DashBoardController {
 
     @GetMapping(value = "/dashboard")
     public String DashBoard(){
-        return "../teplates/dashboard.html";
+        return "../templates/dashboard.html";
     }
 
     @ResponseBody
