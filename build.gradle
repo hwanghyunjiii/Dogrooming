@@ -1,16 +1,68 @@
-plugins {
-    id 'java'
+buildscript {
+    ext {
+        springBootVersion = '2.1.8.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath "io.spring.gradle:dependency-management-plugin:1.0.8.RELEASE"
+    }
 }
 
-group 'Dogrooming'
-version '1.0-SNAPSHOT'
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
 
-sourceCompatibility = 1.8
+    sourceCompatibility = 1.8
 
-repositories {
-    mavenCentral()
+    repositories {
+        mavenCentral()
+    }
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+
+    // 모든 모듈에서 사용하는 라이브러리
+    dependencies {
+        testCompile group: 'junit', name: 'junit', version: '4.12'
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+        //lombok
+        compileOnly 'org.projectlombok:lombok:1.18.22'
+        annotationProcessor 'org.projectlombok:lombok:1.18.22'
+
+        // DB 연동
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+        compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.4.0'
+        compile group: 'com.zaxxer', name: 'HikariCP', version: '3.3.0'
+    }
+
 }
 
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+project(':Common') {
+    // Common 모듈에만 필요한 라이브러리가 발생하면 이곳에 추가한다.
+    dependencies {
+    }
+}
+
+project(':User') {
+    // User 모듈에만 필요한 라이브러리가 발생하면 이곳에 추가한다.
+    dependencies {
+        compile project(':Common')
+    }
+}
+
+project(':Admin') {
+    // Admin 모듈에만 필요한 라이브러리가 발생하면 이곳에 추가한다.
+    dependencies {
+        compile project(':Common')
+    }
 }
