@@ -13,40 +13,8 @@
     <!-- 각 화면 컨텐츠 -->
     <th:block layout:fragment="content" />
 
-
-    <!-- All JS Custom Plugins Link Here here -->
-    <script th:src="@{/js/vendor/modernizr-3.5.0.min.js}"></script>
-    <!-- Jquery, Popper, Bootstrap -->
-    <script th:src="@{/js/vendor/jquery-1.12.4.min.js}"></script>
-    <script th:src="@{/js/popper.min.js}"></script>
-    <script th:src="@{/js/bootstrap.min.js}"></script>
-    <!-- Jquery Mobile Menu -->
-    <script th:src="@{/js/jquery.slicknav.min.js}"></script>
-
-    <!-- Jquery Slick , Owl-Carousel Plugins -->
-    <script th:src="@{/js/owl.carousel.min.js}"></script>
-    <script th:src="@{/js/slick.min.js}"></script>
-
-    <!-- One Page, Animated-HeadLin -->
-    <script th:src="@{/js/wow.min.js}"></script>
-    <script th:src="@{/js/animated.headline.js}"></script>
-    <script th:src="@{/js/jquery.magnific-popup.js}"></script>
-
-    <!-- Scrollup, nice-select, sticky -->
-    <script th:src="@{/js/jquery.scrollUp.min.js}"></script>
-    <script th:src="@{/js/jquery.nice-select.min.js}"></script>
-    <script th:src="@{/js/jquery.sticky.js}"></script>
-
-    <!-- contact js -->
-    <script th:src="@{/js/contact.js}"></script>
-    <script th:src="@{/js/jquery.form.js}"></script>
-    <script th:src="@{/js/jquery.validate.min.js}"></script>
-    <script th:src="@{/js/mail-script.js}"></script>
-    <script th:src="@{/js/jquery.ajaxchimp.min.js}"></script>
-
-    <!-- Jquery Plugins, main Jquery -->
-    <script th:src="@{/js/plugins.js}"></script>
-    <script th:src="@{/js/main.js}"></script>
+    <!-- JS -->
+    <th:block th:replace="fragments/commonBody"></th:block>
 
 </div>
 </body>
