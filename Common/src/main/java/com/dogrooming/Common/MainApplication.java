@@ -1,4 +1,4 @@
-package com.dogroomgin.Common;
+package com.dogrooming.Common;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
