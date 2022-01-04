@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      lang="ko">
+    <head>
+        <header th:replace="~{fragments/header :: header}"></header>
+        <title>Dogrooming</title>
+    </head>
+<body>
+    <div>
+        <!--contents-->
+        <th:block layout:fragment="content" />
+        <!--JS-->
+        <th:block th:replace="fragments/body"/>
+    </div>
+</body>
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
+</html>
