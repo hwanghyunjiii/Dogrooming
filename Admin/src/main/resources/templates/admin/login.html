@@ -1,22 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
   <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <header th:replace="~{fragments/header :: header}"></header>
     <title>Dogrooming Admin</title>
-    <!-- plugins:css -->
-    <link rel="stylesheet" href="/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="/css/vendor.bundle.base.css">
-    <!-- endinject -->
-    <!-- Plugin css for this page -->
-    <!-- End plugin css for this page -->
-    <!-- inject:css -->
-    <!-- endinject -->
-    <!-- Layout styles -->
-    <link rel="stylesheet" href="/css/style.css">
-    <!-- End layout styles -->
-    <link rel="shortcut icon" href="/static/images/favicon.jpg" />
   </head>
   <body>
     <div class="container-scroller">
@@ -51,7 +37,7 @@
                     <button class="btn btn-google col">
                       <i class="mdi mdi-google-plus"></i> Google plus </button>
                   </div>
-                  <p class="sign-up">아직 Dogrooming 디자이너가 아니신가요?<a href="#"> 가입하기</a></p>
+                  <p class="sign-up">아직 Dogrooming 디자이너가 아니신가요?<a th:href="@{/admin/register}"> 가입하기</a></p>
                 </form>
               </div>
             </div>
@@ -62,18 +48,7 @@
       </div>
       <!-- page-body-wrapper ends -->
     </div>
-    <!-- container-scroller -->
-    <!-- plugins:js -->
-    <script src="/js/vendor.bundle.base.js"></script>
-    <!-- endinject -->
-    <!-- Plugin js for this page -->
-    <!-- End plugin js for this page -->
-    <!-- inject:js -->
-    <script src="/js/off-canvas.js"></script>
-    <script src="/js/hoverable-collapse.js"></script>
-    <script src="/js/misc.js"></script>
-    <script src="/js/settings.js"></script>
-    <script src="/js/todolist.js"></script>
-    <!-- endinject -->
+    <!--JS-->
+    <th:block th:replace="fragments/body"/>
   </body>
 </html>
