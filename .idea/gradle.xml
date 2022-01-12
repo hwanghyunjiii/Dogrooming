@@ -13,8 +13,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/Admin" />
-            <option value="$PROJECT_DIR$/Common" />
-            <option value="$PROJECT_DIR$/User" />
+            <option value="$PROJECT_DIR$/Customer" />
           </set>
         </option>
       </GradleProjectSettings>
