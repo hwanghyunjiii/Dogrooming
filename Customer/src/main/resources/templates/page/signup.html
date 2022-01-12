@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}"
+      th:with="metaTitle='Sign Up'">
+<head>
+</head>
+
+<body>
+<th:block layout:fragment="content" />
+<!-- content -->
+<th:block layout:fragment="content">
+    <!-- slider Area Start-->
+    <div class="slider-area ">
+        <!-- Mobile Menu -->
+        <div class="single-slider slider-height2 d-flex align-items-center" th:data-background="@{/img/hero/category.jpg}">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="hero-cap text-center">
+                            <h2>Sign Up</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- slider Area End-->
+
+    <!--================SignUp Area =================-->
+    <section class="checkout_area section_padding">
+        <div class="container">
+            <div class="billing_details">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <form class="row contact_form" th:action="@{/signup}" method="post" novalidate="novalidate">
+                            <div class="col-md-12 form-group p_star">
+                                <input type="text" class="form-control" id="AdminID" name="AdminID" />
+                                <span class="placeholder" data-placeholder="아이디"></span>
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                <input type="text" class="form-control" id="Password" name="Password" placeholder="비밀번호"/>
+                                <span class="placeholder" data-placeholder="비밀번호"></span>
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                <input type="password" class="form-control" id="password_confirm" name="password_confirm" />
+                                <span class="placeholder" data-placeholder="비밀번호 확인"></span>
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                <input type="text" class="form-control" id="Name" name="Name" />
+                                <span class="placeholder" data-placeholder="이름"></span>
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                <input type="text" class="form-control" id="Email" name="Email" />
+                                <span class="placeholder" data-placeholder="이메일"></span>
+                            </div>
+                            <div class="col-md-8 form-group p_star">
+                                <input type="text" class="form-control" id="Phone" name="Phone" />
+                                <span class="placeholder" data-placeholder="휴대전화"></span>
+                            </div>
+                            <div class="col-md-4 form-group p_star">
+                                <button type="submit" value="submit" class="genric-btn info-border radius w-100">
+                                    인증
+                                </button>
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                <input type="text" class="form-control" id="authno" name="authno" />
+                                <span class="placeholder" data-placeholder="인증번호를 입력하세요."></span>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <button type="submit" class="btn_3 w-100">
+                                    회원가입
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================End SignUp Area =================-->
+
+</th:block>
+
+</body>
+</html>
