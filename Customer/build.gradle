@@ -29,9 +29,13 @@ dependencies {
     // lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-
 }
 
 test {
     useJUnitPlatform()
+}
+
+jar {
+    archivesBaseName = 'Dogrooming-Customer'
+    archiveVersion = "0.0.1"
 }

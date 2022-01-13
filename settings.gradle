@@ -1,4 +1,5 @@
 rootProject.name = 'Dogrooming'
 include 'Admin'
 include 'Customer'
+include 'Common'
 
