@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dataSource name="Dogrooming_DB@localhost">
+<dataSource name="dogrooming@localhost">
   <database-model serializer="dbm" dbms="MARIADB" family-id="MARIADB" format-version="4.31">
     <root id="1">
       <DefaultCasing>mixed/mixed</DefaultCasing>
@@ -1090,7 +1090,7 @@
     <collation id="323" parent="1" name="utf8mb4_vietnamese_ci">
       <Charset>utf8mb4</Charset>
     </collation>
-    <schema id="324" parent="1" name="Dogrooming_DB">
+    <schema id="324" parent="1" name="dogrooming">
       <Collation>utf8mb3_general_ci</Collation>
       <Current>1</Current>
     </schema>
@@ -1115,29 +1115,5 @@
     <user id="331" parent="1" name="root">
       <Host>localhost</Host>
     </user>
-    <table id="332" parent="324" name="hibernate_sequence"/>
-    <table id="333" parent="324" name="test_model"/>
-    <column id="334" parent="332" name="next_val">
-      <DataType>bigint(20)|0s</DataType>
-      <Position>1</Position>
-    </column>
-    <column id="335" parent="333" name="board_no">
-      <DataType>int(11)|0s</DataType>
-      <NotNull>1</NotNull>
-      <Position>1</Position>
-    </column>
-    <column id="336" parent="333" name="content">
-      <DataType>varchar(255)|0s</DataType>
-      <Position>2</Position>
-    </column>
-    <column id="337" parent="333" name="title">
-      <DataType>varchar(255)|0s</DataType>
-      <Position>3</Position>
-    </column>
-    <key id="338" parent="333" name="PRIMARY">
-      <ColNames>board_no</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <Primary>1</Primary>
-    </key>
   </database-model>
 </dataSource>
