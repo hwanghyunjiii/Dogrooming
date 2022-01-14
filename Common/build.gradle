@@ -35,6 +35,7 @@ test {
 }
 
 jar {
-    archivesBaseName = 'Dogrooming-Customer'
+    archivesBaseName = 'Dogrooming-Common'
     archiveVersion = "0.0.1"
+    enabled = false
 }
