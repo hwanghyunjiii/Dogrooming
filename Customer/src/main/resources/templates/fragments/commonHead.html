@@ -7,7 +7,8 @@
     <meta name="title" th:content="${metaTitle}">
     <title th:text="${metaTitle}"></title>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 
     <!-- css -->
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
@@ -30,8 +31,18 @@
             margin-left: 5px;
         }
 
-        .id_ok{color:#fff; display: none;}
-        .id_already{color:#6A82FB; display: none;}
+        .id_ok{
+            color: #325cff;
+            font-size: 9pt;
+            margin-left: 5px;
+            display: none;
+        }
+        .id_already{
+            color: #d40010;
+            font-size: 9pt;
+            margin-left: 5px;
+            display: none;
+        }
     </style>
 </th:block>
 </html>

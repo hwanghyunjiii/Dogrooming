@@ -43,9 +43,9 @@ public class AdminController {
         return "redirect:/login";
     }
 
-
     // 아이디 체크
     @PostMapping("/checkadminid")
+    @ResponseBody
     public boolean CheckAdminID(@RequestParam("adminID") String AdminID){
         log.info("전달받은 id:"+AdminID);
         boolean result = adminService.CheckAdminID(AdminID);
