@@ -1,11 +1,13 @@
 package com.h2.dogrooming.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.*;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.validation.Valid;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
@@ -16,39 +18,38 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
-    @Autowired
-    private AdminRepository adminRepository;
-
     @GetMapping(value = "/login")
     public String goLogin()
     {
         return "page/login";
     }
 
-
     @GetMapping(value = "/signup")
     public String goSignUp()
     {
-        log.info("count : " +  adminRepository.count());
-        log.info("count : " +  adminRepository.findAll());
-
         return "page/signup";
     }
 
-
     @PostMapping(value = "/signup")
-    public String Join(Admin admin)
+    public String Join(@Valid @ModelAttribute Admin admin, Errors errors)
     {
-        log.info("AdminID : " + admin.getAdminID());
-        log.info("Email : " + admin.getEmail());
-        log.info("PW : " + admin.getPassword());
-        log.info("Phone : " + admin.getPhone());
-        log.info("Name : " + admin.getName());
+        // @Valid : 어노테이션들의 조건을 만족하는지 확인
+        if (errors.hasErrors()) {
+            log.info(errors.getAllErrors().toString());
+            return "page/signup";
+        }
 
         adminService.signUpAdmin(admin);
-        log.info("signupadmin 후");
-
         return "redirect:/login";
     }
 
+
+    // 아이디 체크
+    @PostMapping("/checkadminid")
+    public boolean CheckAdminID(@RequestParam("adminID") String AdminID){
+        log.info("전달받은 id:"+AdminID);
+        boolean result = adminService.CheckAdminID(AdminID);
+        log.info("확인 결과:"+result);
+        return result;
+    }
 }
