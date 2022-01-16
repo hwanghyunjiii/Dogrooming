@@ -1,4 +1,4 @@
-package com.h2.dogrooming.admin;
+package com.h2.dogrooming.config;
 
 
 import lombok.AllArgsConstructor;
