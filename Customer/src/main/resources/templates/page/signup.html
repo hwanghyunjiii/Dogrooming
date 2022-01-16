@@ -7,7 +7,6 @@
 </head>
 
 <body>
-<th:block layout:fragment="content" />
 <!-- content -->
 <th:block layout:fragment="content">
     <!-- slider Area Start-->
@@ -33,30 +32,27 @@
             <div class="billing_details">
                 <div class="row justify-content-center">
                     <div class="col-lg-8">
-                        <form class="row contact_form" th:action="@{/signup}" method="post" novalidate="novalidate">
+                        <form id="form" class="row contact_form" th:action="@{/signup}" method="post" novalidate="novalidate">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                             <div class="col-md-12 form-group p_star">
-                                <input type="text" class="form-control" id="AdminID" name="AdminID" />
-                                <span class="placeholder" data-placeholder="아이디"></span>
+                                <input type="text" class="form-control" id="adminID" name="adminID" placeholder="ID" maxlength="40" oninput="CheckAdminID()"/>
+                                <span class="id_ok">사용 가능한 아이디입니다.</span>
+                                <span class="id_already">누군가 이 아이디를 사용하고 있어요.</span>
                             </div>
                             <div class="col-md-12 form-group p_star">
-                                <input type="text" class="form-control" id="Password" name="Password" placeholder="비밀번호"/>
-                                <span class="placeholder" data-placeholder="비밀번호"></span>
+                                <input type="password" class="form-control" id="password" name="password" maxlength="40" placeholder="비밀번호"/>
                             </div>
                             <div class="col-md-12 form-group p_star">
-                                <input type="password" class="form-control" id="password_confirm" name="password_confirm" />
-                                <span class="placeholder" data-placeholder="비밀번호 확인"></span>
+                                <input type="password" class="form-control" id="password_confirm" name="password_confirm" maxlength="40" placeholder="비밀번호 확인"/>
                             </div>
                             <div class="col-md-12 form-group p_star">
-                                <input type="text" class="form-control" id="Name" name="Name" />
-                                <span class="placeholder" data-placeholder="이름"></span>
+                                <input type="text" class="form-control" id="name" name="name" maxlength="20" placeholder="이름"/>
                             </div>
                             <div class="col-md-12 form-group p_star">
-                                <input type="text" class="form-control" id="Email" name="Email" />
-                                <span class="placeholder" data-placeholder="이메일"></span>
+                                <input type="text" class="form-control" id="email" name="email" maxlength="50" placeholder="이메일"/>
                             </div>
                             <div class="col-md-8 form-group p_star">
-                                <input type="text" class="form-control" id="Phone" name="Phone" />
-                                <span class="placeholder" data-placeholder="휴대전화"></span>
+                                <input type="text" class="form-control" id="phone" name="phone" maxlength="20" placeholder="번호 (ex: 01012341234)" />
                             </div>
                             <div class="col-md-4 form-group p_star">
                                 <button type="submit" value="submit" class="genric-btn info-border radius w-100">
@@ -64,8 +60,7 @@
                                 </button>
                             </div>
                             <div class="col-md-12 form-group p_star">
-                                <input type="text" class="form-control" id="authno" name="authno" />
-                                <span class="placeholder" data-placeholder="인증번호를 입력하세요."></span>
+                                <input type="text" class="form-control" id="authno" name="authno" placeholder="인증번호를 입력하세요."/>
                             </div>
                             <div class="col-md-12 form-group">
                                 <button type="submit" class="btn_3 w-100">
@@ -80,6 +75,101 @@
     </section>
     <!--================End SignUp Area =================-->
 
+    <script type="text/javascript">
+        $(function (){
+
+            $("form").validate({
+            /**
+             * submitHandler : form 양식이 유효한 경우 실질적인
+             * submit을 하기 위한 콜백 핸들러.
+             * 유효성이 확인된 후 Ajax를 통해 처리하기에 적합하다.
+             */
+            submitHandler: function(form) {
+                var f = confirm("회원가입을 하겠습니까?");
+                if(f){
+                    form.submit();
+                } else {
+                    return false;
+                }
+            },
+            // 체크할 항목들의 룰 설정
+            rules: {
+                adminID: {
+                    required : true,
+                    minlength : 5
+                },
+                password: {
+                    required : true,
+                    minlength : 4
+                },
+                password_confirm: {
+                    required : true,
+                    minlength : 4,
+                    equalTo : password
+                },
+                name: {
+                    required : true,
+                    minlength : 2
+                },
+                email: {
+                    required: true,
+                    minlength: 2,
+                    email: true
+                },
+                phone : {
+                    required :true
+                }
+            },
+            //규칙체크 실패시 출력될 메시지
+            messages : {
+                adminID: {
+                    required : "ID를 입력해주세요",
+                    minlength : "최소 {0}글자 이상 입력해주세요."
+                },
+                password: {
+                    required : "비밀번호를 입력해주세요",
+                    minlength : "최소 {0}글자 이상 입력해주세요."
+                },
+                password_confirm: {
+                    required : "비밀번호 확인을 입력해주세요",
+                    minlength : "최소 {0}글자 이상 입력해주세요.",
+                    equalTo : "비밀번호가 일치하지 않습니다."
+                },
+                name: {
+                    required : "이름를 입력해주세요",
+                    minlength : "최소 {0}글자 이상 입력해주세요."
+                },
+                email: {
+                    required : "이메일을 입력해주세요",
+                    minlength : "최소 {0}글자 이상 입력해주세요.",
+                    email : "메일을 확인해주세요"
+                },
+                phone: {
+                    required : "번호를 입력해주세요",
+                    minlength : "최소 {0}글자 이상 입력해주세요."
+                }
+            }
+            });
+        })
+
+        function CheckAdminID(){
+            /*
+            var adminID = $('#adminID').val();
+            $.ajax({
+                url:'/checkadminid', //Controller에서 인식할 주소
+                type:'post', //POST 방식으로 전달
+                data:{adminID:adminID},
+                success:function(){
+                    console.log("처리 성공 시 변경되는 내용");
+                },
+                error:function(){
+                    alert("에러입니다");
+                }
+            });
+
+             */
+        };
+    </script>
 </th:block>
 
 </body>
