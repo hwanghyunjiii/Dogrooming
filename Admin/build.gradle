@@ -1,18 +1,40 @@
-/*
 plugins {
+    id 'org.springframework.boot' version '2.6.2'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
 }
 
-group 'Dogrooming'
-version '1.0-SNAPSHOT'
-
-sourceCompatibility = 1.8
+group 'com.h2'
+version '0.0.1-SNAPSHOT'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+
+    // DB
+    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'mysql:mysql-connector-java'
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+
+    // lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 }
-*/
+
+test {
+    useJUnitPlatform()
+}
+
+jar {
+    archivesBaseName = 'Dogrooming-Admin'
+    archiveVersion = "0.0.1"
+    enabled = false
+}

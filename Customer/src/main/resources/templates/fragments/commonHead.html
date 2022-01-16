@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="commonHead">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <meta charset="utf-8">
+    <meta name="title" th:content="${metaTitle}">
+    <title th:text="${metaTitle}"></title>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+
+    <!-- css -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/owl.carousel.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/flaticon.css}"/>
+    <link rel="stylesheet" th:href="@{/css/slicknav.css}"/>
+    <link rel="stylesheet" th:href="@{/css/animate.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/magnific-popup.css}"/>
+    <link rel="stylesheet" th:href="@{/css/fontawesome-all.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/themify-icons.css}"/>
+    <link rel="stylesheet" th:href="@{/css/slick.css}"/>
+    <link rel="stylesheet" th:href="@{/css/nice-select.css}"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+
+    <!-- 에러메시지 -->
+    <style>
+        label.error {
+            color: #d40010;
+            font-size: 9pt;
+            margin-left: 5px;
+        }
+
+        .id_ok{color:#fff; display: none;}
+        .id_already{color:#6A82FB; display: none;}
+    </style>
+</th:block>
+</html>
