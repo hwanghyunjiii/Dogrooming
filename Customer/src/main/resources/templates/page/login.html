@@ -12,7 +12,7 @@
     <!-- slider Area Start-->
     <div class="slider-area ">
         <!-- Mobile Menu -->
-        <div class="single-slider slider-height2 d-flex align-items-center" th:data-background="@{/img/hero/category.jpg}">
+        <div class="single-slider slider-height2 d-flex align-items-center" th:data-background="@{/img/category_dogrooming.png}">
             <div class="container">
                 <div class="row">
                     <div class="col-xl-12">
@@ -29,38 +29,29 @@
     <!--================login_part Area =================-->
     <form action="/login" method="post">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-        <section class="login_part section_padding ">
+        <section class="login_part">
             <div class="container">
                 <div class="row justify-content-center">
-                    <div class="col-lg-6 col-md-6">
-                        <div class="login_part_text text-center">
-                            <div class="login_part_text_iner">
-                                <h2>New to our Shop?</h2>
-                                <p>There are advances being made in science and technology
-                                    everyday, and a good example of this is the</p>
-                                <a th:href="@{signup}" class="btn_3">Create an Account</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6">
+                    <div class="col-lg-6 col-md-8">
                         <div class="login_part_form">
                             <div class="login_part_form_iner">
-                                <h3>Welcome Back ! <br>
-                                    Please Sign in now</h3>
                                 <form class="row contact_form" action="#" method="post" novalidate="novalidate">
                                     <div class="col-md-12 form-group p_star">
-                                        <input type="text" class="form-control" id="username" name="username"  maxlength="40" value=""
-                                               placeholder="ID">
+                                        <input type="text" class="form-control" id="username" name="username" maxlength="40" value="" placeholder="ID">
                                     </div>
                                     <div class="col-md-12 form-group p_star">
-                                        <input type="password" class="form-control" id="password" name="password"  maxlength="40" value=""
-                                               placeholder="Password">
+                                        <input type="password" class="form-control" id="password" name="password"  maxlength="40" value="" placeholder="Password">
                                     </div>
                                     <div class="col-md-12 form-group">
                                         <button type="submit" value="submit" class="btn_3">
                                             log in
                                         </button>
-                                        <a class="lost_pass" href="#">forget password?</a>
+                                    </div>
+
+                                    <div class="col-md-12 row form-group">
+                                        <a class="lost_pass col-md-4 col-4" href="#">아이디 찾기</a>
+                                        <a class="lost_pass col-md-5 col-4" href="#">비밀번호 재설정</a>
+                                        <a class="lost_pass col-md-3 col-4" th:href="@{signup}">회원가입</a>
                                     </div>
                                 </form>
                             </div>
@@ -73,6 +64,36 @@
     <!--================login_part end =================-->
 
     <script type="text/javascript">
+        $(function (){
+
+            $("form").validate({
+                submitHandler: function(form) {
+                    form.submit();
+                },
+                // 체크할 항목들의 룰 설정
+                rules: {
+                    username: {
+                        required : true,
+                        minlength : 4
+                    },
+                    password: {
+                        required : true,
+                        minlength : 4
+                    }
+                },
+                //규칙체크 실패시 출력될 메시지
+                messages : {
+                    username: {
+                        required : "ID를 입력해주세요",
+                        minlength : "최소 {0}글자 이상 입력해주세요."
+                    },
+                    password: {
+                        required : "비밀번호를 입력해주세요",
+                        minlength : "최소 {0}글자 이상 입력해주세요."
+                    }
+                }
+            });
+        })
 
     </script>
 
