@@ -11979,7 +11979,7 @@ input:focus {
 /* line 2030, ../../SAIFUL/Running_project/250 eCommerce_HTML/250 eCommerce_HTML/250 eCommerce_HTML/assets/scss/_product.scss */
 .login_part .lost_pass {
   color: #777777;
-  text-align: right;
+  text-align: center;
   float: right;
   text-transform: capitalize;
 }

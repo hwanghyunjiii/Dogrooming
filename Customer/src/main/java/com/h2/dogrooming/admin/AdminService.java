@@ -36,6 +36,7 @@ public class AdminService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String adminID) throws UsernameNotFoundException {
+
         Optional<Admin> adminOptional = adminRepository.findByAdminID(adminID);
         Admin admin = adminOptional.get();
 
@@ -44,6 +45,7 @@ public class AdminService implements UserDetailsService {
 
         return new User(admin.getAdminID(), admin.getPassword(), authorities);
     }
+
 
     // 아이디 중복 체크
     public boolean CheckAdminID(String AdminID) {
