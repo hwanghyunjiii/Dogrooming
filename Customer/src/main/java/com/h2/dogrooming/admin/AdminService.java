@@ -23,6 +23,10 @@ public class AdminService implements UserDetailsService {
     @Autowired
     private AdminRepository adminRepository;
 
+    public Admin adminInfo(String adminID) {
+        return adminRepository.getAdminByAdminID(adminID);
+    }
+
     public void signUpAdmin(Admin admin) {
         // 비밀번호 암호화
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -37,13 +41,14 @@ public class AdminService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String adminID) throws UsernameNotFoundException {
 
-        Optional<Admin> adminOptional = adminRepository.findByAdminID(adminID);
-        Admin admin = adminOptional.get();
+        Admin admin = adminRepository.findByAdminID(adminID)
+                .orElseThrow(() -> new UsernameNotFoundException("Could not found user" + adminID));
 
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(Role.CUSTOMER.getValue()));
-
-        return new User(admin.getAdminID(), admin.getPassword(), authorities);
+        return User.builder()
+                .username(admin.getAdminID())
+                .password(admin.getPassword())
+                .roles("CUSTOMER")
+                .build();
     }
 
 

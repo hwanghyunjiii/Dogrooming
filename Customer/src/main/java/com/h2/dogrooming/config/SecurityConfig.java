@@ -1,6 +1,7 @@
 package com.h2.dogrooming.config;
 
 import com.h2.dogrooming.admin.AdminService;
+import com.h2.dogrooming.admin.LoginFailureHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -32,6 +34,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+
+
         http.authorizeRequests()
                 // 페이지 권한 설정
                 .antMatchers("/admin/**").hasRole("CUSTOMER")
@@ -39,7 +44,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .and() // 로그인 설정
                 .formLogin()
                 .loginPage("/login")
+                .failureUrl("/login")
                 .defaultSuccessUrl("/")
+                //.successHandler(LoginSuccessHandler())
+                .failureHandler(new LoginFailureHandler())
                 .permitAll()
                 .and() // 로그아웃 설정
                 .logout()
