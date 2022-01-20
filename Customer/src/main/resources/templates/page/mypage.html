@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}"
+      th:with="metaTitle='Sign Up'">
+<head>
+</head>
+
+<body>
+<!-- content -->
+<th:block layout:fragment="content">
+    <!-- slider Area Start-->
+    <div class="slider-area ">
+        <!-- Mobile Menu -->
+        <div class="single-slider slider-height2 d-flex align-items-center" th:data-background="@{/img/hero/category.jpg}">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="hero-cap text-center">
+                            <h2>My Page</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- slider Area End-->
+
+    <!--================MyPage Area =================-->
+    <section class="checkout_area p-5">
+        <div class="container">
+            <div class="billing_details">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <form id="form" class="row contact_form" th:action="@{/signup}" method="post" novalidate="novalidate">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                            <div class="col-md-12 form-group p_star">
+                                <span class="input_title">아이디</span>
+                                <input type="text" class="form-control" id="adminID" name="adminID" th:value="${admin.adminID}" maxlength="40" readonly/>
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                <span class="input_title">비밀번호</span>
+                                <input type="password" class="form-control" id="password" name="password" maxlength="40"/>
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                <span class="input_title">비밀번호 확인</span>
+                                <input type="password" class="form-control" id="password_confirm" name="password_confirm" maxlength="40"/>
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                <span class="input_title">이름</span>
+                                <input type="text" class="form-control" id="name" name="name" maxlength="20" th:value="${admin.name}"/>
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                <span class="input_title">이메일</span>
+                                <input type="text" class="form-control" id="email" name="email" maxlength="50" th:value="${admin.email}"/>
+                            </div>
+                            <div class="col-md-8 form-group p_star">
+                                <span class="input_title">번호 (ex: 01012341234)</span>
+                                <input type="text" class="form-control" id="phone" name="phone" maxlength="20" placeholder="번호 (ex: 01012341234)"  th:value="${admin.phone}"/>
+                            </div>
+                            <div class="col-md-4 form-group p_star">
+                                <button type="submit" value="submit" class="genric-btn info-border radius w-100">
+                                    인증
+                                </button>
+                            </div>
+                            <div class="col-md-12 form-group p_star" style="display:none">
+                                <span class="input_title">인증번호</span>
+                                <input type="text" class="form-control" id="authno" name="authno" placeholder=""/>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <button type="submit" class="btn_3 w-100">
+                                    회원 정보 수정
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================End MyPage Area =================-->
+
+</th:block>
+
+</body>
+</html>

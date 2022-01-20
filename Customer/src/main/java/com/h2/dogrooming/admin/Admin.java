@@ -4,12 +4,15 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.util.Collection;
 import java.util.Date;
 
 @Entity
@@ -56,6 +59,7 @@ public class Admin {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateDate; //수정날짜
 
+
     @Builder
     public Admin(String adminID, String password) {
         adminID = adminID;
@@ -65,4 +69,5 @@ public class Admin {
     public Admin() {
 
     }
+
 }

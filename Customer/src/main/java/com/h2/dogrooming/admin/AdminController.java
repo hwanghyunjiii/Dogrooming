@@ -1,15 +1,16 @@
 package com.h2.dogrooming.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.validation.Valid;
-import java.sql.Connection;
-import java.sql.DriverManager;
 
 @Slf4j
 @Controller
@@ -18,10 +19,27 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
-    @GetMapping(value = "/login")
+    @RequestMapping(value = "/login")
     public String goLogin()
     {
         return "page/login";
+    }
+
+    @GetMapping(value = "/mypage")
+    public String goMyPage(Model model, Authentication authentication)
+    {
+        if(authentication == null)
+        {
+            return "redirect:/login";
+        }
+
+        UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+        Admin admin = adminService.adminInfo(userDetails.getUsername());
+
+
+        model.addAttribute("haram", admin.getAdminID());
+        model.addAttribute("admin", admin);
+        return "page/mypage";
     }
 
     @GetMapping(value = "/signup")
@@ -29,6 +47,7 @@ public class AdminController {
     {
         return "page/signup";
     }
+
 
     @PostMapping(value = "/signup")
     public String Join(@Valid @ModelAttribute Admin admin, Errors errors)
@@ -40,6 +59,7 @@ public class AdminController {
         }
 
         adminService.signUpAdmin(admin);
+
         return "redirect:/login";
     }
 
