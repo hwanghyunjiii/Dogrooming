@@ -34,25 +34,28 @@
                     <div class="col-lg-8">
                         <form id="form" class="row contact_form" th:action="@{/signup}" method="post" novalidate="novalidate">
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                            <input type="hidden" name="adminID_chkflag" id="adminID_chkflag" th:value="N">
-                            <span th:text="${admin}"></span>
-                            <span th:text="${haram}"></span>
                             <div class="col-md-12 form-group p_star">
-                                <span th:text="${admin.adminID}"></span>
+                                <span class="input_title">아이디</span>
+                                <input type="text" class="form-control" id="adminID" name="adminID" th:value="${admin.adminID}" maxlength="40" readonly/>
                             </div>
                             <div class="col-md-12 form-group p_star">
-                                <input type="password" class="form-control" id="password" name="password" maxlength="40" placeholder="비밀번호"/>
+                                <span class="input_title">비밀번호</span>
+                                <input type="password" class="form-control" id="password" name="password" maxlength="40"/>
                             </div>
                             <div class="col-md-12 form-group p_star">
-                                <input type="password" class="form-control" id="password_confirm" name="password_confirm" maxlength="40" placeholder="비밀번호 확인"/>
+                                <span class="input_title">비밀번호 확인</span>
+                                <input type="password" class="form-control" id="password_confirm" name="password_confirm" maxlength="40"/>
                             </div>
                             <div class="col-md-12 form-group p_star">
-                                <input type="text" class="form-control" id="name" name="name" maxlength="20" placeholder="이름" th:value="${admin.name}"/>
+                                <span class="input_title">이름</span>
+                                <input type="text" class="form-control" id="name" name="name" maxlength="20" th:value="${admin.name}"/>
                             </div>
                             <div class="col-md-12 form-group p_star">
-                                <input type="text" class="form-control" id="email" name="email" maxlength="50" placeholder="이메일" th:value="${admin.email}"/>
+                                <span class="input_title">이메일</span>
+                                <input type="text" class="form-control" id="email" name="email" maxlength="50" th:value="${admin.email}"/>
                             </div>
                             <div class="col-md-8 form-group p_star">
+                                <span class="input_title">번호 (ex: 01012341234)</span>
                                 <input type="text" class="form-control" id="phone" name="phone" maxlength="20" placeholder="번호 (ex: 01012341234)"  th:value="${admin.phone}"/>
                             </div>
                             <div class="col-md-4 form-group p_star">
@@ -60,8 +63,9 @@
                                     인증
                                 </button>
                             </div>
-                            <div class="col-md-12 form-group p_star">
-                                <input type="text" class="form-control" id="authno" name="authno" placeholder="인증번호를 입력하세요."/>
+                            <div class="col-md-12 form-group p_star" style="display:none">
+                                <span class="input_title">인증번호</span>
+                                <input type="text" class="form-control" id="authno" name="authno" placeholder=""/>
                             </div>
                             <div class="col-md-12 form-group">
                                 <button type="submit" class="btn_3 w-100">
