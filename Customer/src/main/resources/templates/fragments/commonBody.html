@@ -83,6 +83,13 @@
                 return true;
             };
         });
+
+        //input 숫자만 입력
+        $(".numberOnly").on("keyup", function(event) {
+            if (!(event.which && (event.which  > 47 && event.which  < 58 || event.which == 8))) {
+                $(this).val($(this).val().replace(/[^0-9]/g,""));
+            }
+        });
     </script>
 </th:block>
 </html>
