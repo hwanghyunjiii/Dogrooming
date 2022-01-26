@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <!-- slider Area Start-->
+    <div th:fragment="sliderArea(title)">
+        <div class="slider-area">
+            <!-- Mobile Menu -->
+            <div class="single-slider slider-height2 d-flex align-items-center" th:data-background="@{/img/category_dogrooming.png}">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="hero-cap text-center">
+                                <h2 th:text="${title}"></h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- slider Area End-->
+</html>
