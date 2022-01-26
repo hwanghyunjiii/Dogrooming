@@ -54,6 +54,15 @@
 
     <script type="text/javascript">
         $(function (){
+            $('#username').keydown(function()
+            {
+                $('.login_err').text('');
+            });
+
+
+            $('#password').keyup(function() {
+                $('.login_err').text('');
+            });
 
             $("form").validate({
                 submitHandler: function(form) {

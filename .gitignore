@@ -46,3 +46,6 @@ Thumbs.db
 .idea/tasks.xml
 .idea/datasources.xml
 .idea/dataSources.ids
+
+# out 디렉토리 무시
+out/
