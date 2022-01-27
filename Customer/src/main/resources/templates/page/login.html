@@ -50,11 +50,8 @@
 
                                     <div class="col-md-12 row form-group">
                                         <a class="lost_pass col-md-4 col-4" href="#">아이디 찾기</a>
-                                        <a class="lost_pass col-md-5 col-4" href="#" data-toggle="modal" data-target="#resetPass">비밀번호 재설정</a>
+                                        <a class="lost_pass col-md-5 col-4" href="#">비밀번호 재설정</a>
                                         <a class="lost_pass col-md-3 col-4" th:href="@{signup}">회원가입</a>
-
-                                        <th:block th:replace="_modal :: modal('resetPass')">modal</th:block>
-
                                         <!--Sample-->
                                         <!--alert-->
                                         <!--
@@ -104,20 +101,6 @@
             });
         });
 
-    </script>
-    <script>
-        $('#exampleModal1').on('show.bs.modal', function () {
-            $.get("/modals/modal1", function (data) {
-                $('#exampleModal1').find('.modal-body').html(data);
-            })
-        });
-
-        $('#exampleModal2').on('show.bs.modal', function () {
-            var name = prompt("Please enter your name", "John Doe");
-            $.get("/modals/modal2?name=" + name, function (data) {
-                $('#exampleModal2').find('.modal-body').html(data);
-            })
-        })
     </script>
 
 </th:block>
