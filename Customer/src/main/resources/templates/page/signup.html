@@ -10,20 +10,7 @@
 <!-- content -->
 <th:block layout:fragment="content">
     <!-- slider Area Start-->
-    <div class="slider-area ">
-        <!-- Mobile Menu -->
-        <div class="single-slider slider-height2 d-flex align-items-center" th:data-background="@{/img/hero/category.jpg}">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-12">
-                        <div class="hero-cap text-center">
-                            <h2>Sign Up</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div th:include="components/sliderArea :: sliderArea('Sign Up')"></div>
     <!-- slider Area End-->
 
     <!--================SignUp Area =================-->
@@ -36,12 +23,12 @@
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                             <input type="hidden" name="adminID_chkflag" id="adminID_chkflag" th:value="N">
                             <div class="col-md-12 form-group p_star">
-                                <input type="text" class="form-control" id="adminID" name="adminID" placeholder="ID" maxlength="40" oninput="CheckAdminID()"/>
+                                <input type="text" class="form-control" id="adminID" name="adminID" placeholder="ID" maxlength="20" oninput="CheckAdminID()"/>
                                 <span class="id_ok">사용 가능한 아이디입니다.</span>
                                 <span class="id_already">누군가 이 아이디를 사용하고 있어요.</span>
                             </div>
                             <div class="col-md-12 form-group p_star">
-                                <input type="password" class="form-control" id="password" name="password" maxlength="40" placeholder="비밀번호"/>
+                                <input type="password" class="form-control" id="password" name="password" maxlength="20" placeholder="비밀번호"/>
                             </div>
                             <div class="col-md-12 form-group p_star">
                                 <input type="password" class="form-control" id="password_confirm" name="password_confirm" maxlength="40" placeholder="비밀번호 확인"/>
@@ -53,7 +40,7 @@
                                 <input type="text" class="form-control" id="email" name="email" maxlength="50" placeholder="이메일"/>
                             </div>
                             <div class="col-md-8 form-group p_star">
-                                <input type="text" class="form-control" id="phone" name="phone" maxlength="20" placeholder="번호 (ex: 01012341234)" />
+                                <input type="text" class="form-control numberOnly" id="phone" name="phone" maxlength="20" placeholder="번호 (ex: 01012341234)" />
                             </div>
                             <div class="col-md-4 form-group p_star">
                                 <button type="submit" value="submit" class="genric-btn info-border radius w-100">
@@ -79,6 +66,7 @@
     <script type="text/javascript">
         $(function (){
 
+
             $("form").validate({
             submitHandler: function(form) {
                 if($('#adminID_chkflag').val() != "Y"){
@@ -98,11 +86,15 @@
             rules: {
                 adminID: {
                     required : true,
-                    minlength : 4
+                    minlength : 6,
+                    adminID_rule : true
                 },
                 password: {
                     required : true,
-                    minlength : 4
+                    minlength : 6,
+                    password_rule_1 : true,
+                    password_rule_2 : true,
+                    password_rule_3 : true
                 },
                 password_confirm: {
                     required : true,
@@ -119,35 +111,40 @@
                     email: true
                 },
                 phone : {
-                    required :true
+                    required : true,
+                    minlength : 9
                 }
             },
             //규칙체크 실패시 출력될 메시지
             messages : {
                 adminID: {
-                    required : "ID를 입력해주세요",
-                    minlength : "최소 {0}글자 이상 입력해주세요."
+                    required : "ID를 입력해주세요.",
+                    minlength : "최소 {0}글자 이상 입력해주세요.",
+                    adminID_rule : "영문 혹은 숫자만 입력해주세요."
                 },
                 password: {
-                    required : "비밀번호를 입력해주세요",
-                    minlength : "최소 {0}글자 이상 입력해주세요."
+                    required : "비밀번호를 입력해주세요.",
+                    minlength : "최소 {0}글자 이상 입력해주세요.",
+                    password_rule_1 : "하나 이상의 알파벳, 숫자, 특수문자를 사용해주세요.",
+                    password_rule_2 : "연속된 숫자 3개 이상 사용이 불가합니다.",
+                    password_rule_3 : "아이디를 포함한 비밀번호는 사용이 불가합니다."
                 },
                 password_confirm: {
-                    required : "비밀번호 확인을 입력해주세요",
+                    required : "비밀번호 확인을 입력해주세요.",
                     minlength : "최소 {0}글자 이상 입력해주세요.",
                     equalTo : "비밀번호가 일치하지 않습니다."
                 },
                 name: {
-                    required : "이름를 입력해주세요",
+                    required : "이름를 입력해주세요.",
                     minlength : "최소 {0}글자 이상 입력해주세요."
                 },
                 email: {
-                    required : "이메일을 입력해주세요",
+                    required : "이메일을 입력해주세요.",
                     minlength : "최소 {0}글자 이상 입력해주세요.",
-                    email : "메일을 확인해주세요"
+                    email : "메일을 확인해주세요."
                 },
                 phone: {
-                    required : "번호를 입력해주세요",
+                    required : "번호를 입력해주세요.",
                     minlength : "최소 {0}글자 이상 입력해주세요."
                 }
             }
@@ -159,7 +156,7 @@
             var header = $("meta[name='_csrf_header']").attr("content");
             var adminID = $('#adminID').val();
 
-            if(adminID.length >= 5) {
+            if(adminID.length >= 6 && /^[a-zA-Z0-9]*$/.test(adminID)) {
                 // 아이디 중복 체크
                 $.ajax({
                     url:'/checkadminid',
@@ -188,6 +185,12 @@
                         alert("에러 발생");
                     }
                 });
+            }
+            else
+            {
+                $('.id_already').css("display","none");
+                $('.id_ok').css("display", "none");
+                $('#adminID_chkflag').val("N")
             }
         };
     </script>

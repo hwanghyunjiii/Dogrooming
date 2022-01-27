@@ -4,7 +4,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -56,13 +55,21 @@ public class Admin {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateDate; //수정날짜
 
-    @Builder
-    public Admin(String adminID, String password) {
-        adminID = adminID;
-        password = password;
+    public Admin(long adminNo, String adminID, String password, Integer type, String name, String email, String phone, Integer useState, Date registerDate, Date updateDate) {
+        this.adminNo = adminNo;
+        this.adminID = adminID;
+        this.password = password;
+        this.type = type;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.useState = useState;
+        this.registerDate = registerDate;
+        this.updateDate = updateDate;
     }
 
     public Admin() {
 
     }
+
 }

@@ -9,21 +9,9 @@
 <body>
 <!-- content -->
 <th:block layout:fragment="content">
+
     <!-- slider Area Start-->
-    <div class="slider-area ">
-        <!-- Mobile Menu -->
-        <div class="single-slider slider-height2 d-flex align-items-center" th:data-background="@{/img/category_dogrooming.png}">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-12">
-                        <div class="hero-cap text-center">
-                            <h2>Login</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div th:include="components/sliderArea :: sliderArea('Login')"></div>
     <!-- slider Area End-->
 
     <!--================login_part Area =================-->
@@ -37,14 +25,15 @@
                             <div class="login_part_form_iner">
                                 <form class="row contact_form" action="#" method="post" novalidate="novalidate">
                                     <div class="col-md-12 form-group p_star">
-                                        <input type="text" class="form-control" id="username" name="username" maxlength="40" value="" placeholder="ID">
+                                        <input type="text" class="form-control" id="username" name="username" maxlength="20" value="" placeholder="ID">
                                     </div>
                                     <div class="col-md-12 form-group p_star">
-                                        <input type="password" class="form-control" id="password" name="password"  maxlength="40" value="" placeholder="Password">
+                                        <input type="password" class="form-control" id="password" name="password"  maxlength="20" value="" placeholder="Password">
                                     </div>
+                                    <span class="login_err" th:text="${LoginFailMessage}"></span>
                                     <div class="col-md-12 form-group">
                                         <button type="submit" value="submit" class="btn_3">
-                                            log in
+                                            로그인
                                         </button>
                                     </div>
 
@@ -71,6 +60,15 @@
 
     <script type="text/javascript">
         $(function (){
+            $('#username').keydown(function()
+            {
+                $('.login_err').text('');
+            });
+
+
+            $('#password').keyup(function() {
+                $('.login_err').text('');
+            });
 
             $("form").validate({
                 submitHandler: function(form) {
@@ -80,22 +78,28 @@
                 rules: {
                     username: {
                         required : true,
-                        minlength : 4
+                        minlength : 6,
+                        adminID_rule : true
                     },
                     password: {
                         required : true,
-                        minlength : 4
+                        minlength : 6,
+                        password_rule_1 : true,
+                        password_rule_2 : true,
                     }
                 },
                 //규칙체크 실패시 출력될 메시지
                 messages : {
                     username: {
-                        required : "ID를 입력해주세요",
-                        minlength : "최소 {0}글자 이상 입력해주세요."
+                        required : "ID를 입력해주세요.",
+                        minlength : "최소 {0}글자 이상 입력해주세요.",
+                        adminID_rule : "영문 혹은 숫자만 입력해주세요."
                     },
                     password: {
-                        required : "비밀번호를 입력해주세요",
-                        minlength : "최소 {0}글자 이상 입력해주세요."
+                        required : "비밀번호를 입력해주세요.",
+                        minlength : "최소 {0}글자 이상 입력해주세요.",
+                        password_rule_1 : "하나 이상의 알파벳, 숫자, 특수문자를 사용해주세요.",
+                        password_rule_2 : "연속된 숫자 3개 이상 사용이 불가합니다.",
                     }
                 }
             });

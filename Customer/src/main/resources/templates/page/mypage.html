@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}"
+      th:with="metaTitle='Sign Up'">
+<head>
+</head>
+
+<body>
+<!-- content -->
+<th:block layout:fragment="content">
+    <!-- slider Area Start-->
+    <div th:include="components/sliderArea :: sliderArea('My Page')"></div>
+    <!-- slider Area End-->
+
+    <!--================MyPage Area =================-->
+    <section class="checkout_area p-5">
+        <div class="container">
+            <div class="billing_details">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <form id="form" class="row contact_form" th:action="@{/mypage}" method="post" novalidate="novalidate">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                            <div class="col-md-12 form-group p_star">
+                                <span class="input_title">아이디</span>
+                                <input type="text" class="form-control" id="adminID" name="adminID" th:value="${admin.adminID}" maxlength="40" readonly/>
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                <span class="input_title">비밀번호</span>
+                                <button type="submit" value="submit" class="genric-btn info-border radius w-100">
+                                    비밀번호 변경하기
+                                </button>
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                <span class="input_title">이름</span>
+                                <input type="text" class="form-control" id="name" name="name" maxlength="20" th:value="${admin.name}"/>
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                <span class="input_title">이메일</span>
+                                <input type="text" class="form-control" id="email" name="email" maxlength="50" th:value="${admin.email}"/>
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                <span class="input_title">번호 (ex: 01012341234)</span>
+                                <input type="text" class="form-control numberOnly" id="phone" name="phone" maxlength="20" placeholder="번호 (ex: 01012341234)" th:value="${admin.phone}" readonly />
+                            </div>
+                            <div class="col-md-12 form-group p_star" style="display:none">
+                                <span class="input_title">인증번호</span>
+                                <input type="text" class="form-control" id="authno" name="authno" placeholder=""/>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <button type="submit" class="btn_3 w-100">
+                                    회원 정보 수정
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================End MyPage Area =================-->
+
+    <script type="text/javascript">
+        $(function (){
+            $("form").validate({
+                submitHandler: function(form) {
+
+                    var f = confirm("회원 정보를 수정 하겠습니까?");
+                    if(f){
+                        form.submit();
+                    } else {
+                        return false;
+                    }
+                },
+                // 체크할 항목들의 룰 설정
+                rules: {
+                    name: {
+                        required : true,
+                        minlength : 2
+                    },
+                    email: {
+                        required: true,
+                        minlength: 2,
+                        email: true
+                    },
+                    phone : {
+                        required : true,
+                        minlength : 9
+                    }
+                },
+                //규칙체크 실패시 출력될 메시지
+                messages : {
+                    name: {
+                        required : "이름를 입력해주세요.",
+                        minlength : "최소 {0}글자 이상 입력해주세요."
+                    },
+                    email: {
+                        required : "이메일을 입력해주세요.",
+                        minlength : "최소 {0}글자 이상 입력해주세요.",
+                        email : "메일을 확인해주세요."
+                    },
+                    phone: {
+                        required : "번호를 입력해주세요.",
+                        minlength : "최소 {0}글자 이상 입력해주세요."
+                    }
+                }
+            });
+        })
+    </script>
+</th:block>
+
+</body>
+</html>

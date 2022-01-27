@@ -4064,6 +4064,7 @@ input:focus {
 
 /* line 120, ../../SAIFUL/Running_project/250 eCommerce_HTML/250 eCommerce_HTML/250 eCommerce_HTML/assets/scss/_h1-hero.scss */
 .slider-area .hero-cap h2 {
+  font-family: 'Nanum Gothic';
   color: #000;
   font-size: 50px;
   font-weight: 700;
