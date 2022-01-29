@@ -10,7 +10,7 @@
 <!-- content -->
 <th:block layout:fragment="content">
     <!-- slider Area Start-->
-    <div th:include="components/sliderArea :: sliderArea('My Page')"></div>
+    <div th:include="components/sliderArea :: sliderArea('마이페이지')"></div>
     <!-- slider Area End-->
 
     <!--================MyPage Area =================-->
@@ -64,13 +64,9 @@
         $(function (){
             $("form").validate({
                 submitHandler: function(form) {
-
-                    var f = confirm("회원 정보를 수정 하겠습니까?");
-                    if(f){
+                    MsgBox.Confirm("회원 정보를 수정하시겠습니까?", function () {
                         form.submit();
-                    } else {
-                        return false;
-                    }
+                    });
                 },
                 // 체크할 항목들의 룰 설정
                 rules: {

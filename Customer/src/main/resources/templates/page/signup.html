@@ -10,7 +10,7 @@
 <!-- content -->
 <th:block layout:fragment="content">
     <!-- slider Area Start-->
-    <div th:include="components/sliderArea :: sliderArea('Sign Up')"></div>
+    <div th:include="components/sliderArea :: sliderArea('회원가입')"></div>
     <!-- slider Area End-->
 
     <!--================SignUp Area =================-->
@@ -65,22 +65,17 @@
 
     <script type="text/javascript">
         $(function (){
-
-
             $("form").validate({
             submitHandler: function(form) {
                 if($('#adminID_chkflag').val() != "Y"){
-                    alert("아이디를 확인해주세요.");
+                    MsgBox.Alert("아이디를 확인해주세요.");
                     $('#adminID').focus();
                     return false;
                 }
 
-                var f = confirm("회원가입을 하겠습니까?");
-                if(f){
+                MsgBox.Confirm("회원가입을 하시겠습니까?", function () {
                     form.submit();
-                } else {
-                    return false;
-                }
+                });
             },
             // 체크할 항목들의 룰 설정
             rules: {
@@ -159,7 +154,7 @@
             if(adminID.length >= 6 && /^[a-zA-Z0-9]*$/.test(adminID)) {
                 // 아이디 중복 체크
                 $.ajax({
-                    url:'/checkadminid',
+                    url:'/check_adminid',
                     type:'post', //POST 방식으로 전달
                     data:{adminID:adminID},
                     beforeSend : function(xhr)
@@ -193,6 +188,7 @@
                 $('#adminID_chkflag').val("N")
             }
         };
+
     </script>
 </th:block>
 

@@ -11,11 +11,11 @@
 <th:block layout:fragment="content">
 
     <!-- slider Area Start-->
-    <div th:include="components/sliderArea :: sliderArea('Login')"></div>
+    <div th:include="components/sliderArea :: sliderArea('로그인')"></div>
     <!-- slider Area End-->
 
     <!--================login_part Area =================-->
-    <form action="/login" method="post">
+    <form action="/login" method="post" id="form">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
         <section class="login_part">
             <div class="container">
@@ -38,8 +38,8 @@
                                     </div>
 
                                     <div class="col-md-12 row form-group">
-                                        <a class="lost_pass col-md-4 col-4" href="#">아이디 찾기</a>
-                                        <a class="lost_pass col-md-5 col-4" href="#">비밀번호 재설정</a>
+                                        <a class="lost_pass col-md-4 col-4" data-toggle="modal" data-target="#modal_search_adminid">아이디 찾기</a>
+                                        <a class="lost_pass col-md-5 col-4" onclick="test();">비밀번호 재설정</a>
                                         <a class="lost_pass col-md-3 col-4" th:href="@{signup}">회원가입</a>
                                     </div>
                                 </form>
@@ -50,21 +50,113 @@
             </div>
         </section>
     </form>
-    <!--================login_part end =================-->
+    <!--================ login_part end =================-->
+
+    <!--================ 아이디찾기 Modal start ====================-->
+    <div class="modal fade" id="modal_search_adminid" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+         aria-hidden="true">
+
+        <form id="form_search_adminid" class="row contact_form" novalidate="novalidate">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel" th:text="아이디찾기"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <section>
+                            <div class="container">
+                                <div class="billing_details">
+                                    <div class="row justify-content-center">
+                                        <div class="col-lg-12">
+                                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                            <div class="col-md-12 form-group p_star">
+                                                <input type="text" class="form-control" id="name" name="name" maxlength="20" placeholder="이름"/>
+                                            </div>
+                                            <div class="col-md-12 form-group p_star">
+                                                <input type="text" class="form-control" id="email" name="email" maxlength="50" placeholder="이메일"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="genric-btn info-border radius">
+                            아이디 찾기
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!--================ Modal end ====================-->
 
     <script type="text/javascript">
+
+        // 아이디 찾기
+        function Search_AdminID()
+        {
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+            var name = $('#name').val();
+            var email = $('#email').val();
+
+            $.ajax({
+                url:'/search_adminid',
+                type:'post', //POST 방식으로 전달
+                data:{
+                    name: name,
+                    email: email
+                },
+                beforeSend : function(xhr)
+                {
+                    /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+                    xhr.setRequestHeader(header, token);
+                },
+                success:function(data){
+                    var message = "";
+                    if(data != null && data != "")
+                    {
+                        message = "회원님의 계정은 " + data + " 입니다";
+                    }
+                    else
+                    {
+                        message = "회원 정보가 없습니다.";
+                    }
+
+                    $('#name').val("");
+                    $('#email').val("");
+                    $('#modal_search_adminid').modal('hide');
+
+                    MsgBox.Alert(message);
+                },
+                error:function(){
+                    alert("에러 발생");
+                }
+            });
+        }
+
+        function test() {
+            MsgBox.Confirm("Alert Message!", function () {
+                console.log("test");
+            });
+        }
+
         $(function (){
             $('#username').keydown(function()
             {
                 $('.login_err').text('');
             });
 
-
             $('#password').keyup(function() {
                 $('.login_err').text('');
             });
 
-            $("form").validate({
+            $("#form").validate({
                 submitHandler: function(form) {
                     form.submit();
                 },
@@ -94,6 +186,36 @@
                         minlength : "최소 {0}글자 이상 입력해주세요.",
                         password_rule_1 : "하나 이상의 알파벳, 숫자, 특수문자를 사용해주세요.",
                         password_rule_2 : "연속된 숫자 3개 이상 사용이 불가합니다.",
+                    }
+                }
+            });
+
+            $("#form_search_adminid").validate({
+                submitHandler: function(form) {
+                    Search_AdminID();
+                },
+                // 체크할 항목들의 룰 설정
+                rules: {
+                    name: {
+                        required : true,
+                        minlength : 2
+                    },
+                    email: {
+                        required: true,
+                        minlength: 2,
+                        email: true
+                    },
+                },
+                //규칙체크 실패시 출력될 메시지
+                messages : {
+                    name: {
+                        required : "이름를 입력해주세요.",
+                        minlength : "최소 {0}글자 이상 입력해주세요."
+                    },
+                    email: {
+                        required : "이메일을 입력해주세요.",
+                        minlength : "최소 {0}글자 이상 입력해주세요.",
+                        email : "메일을 확인해주세요."
                     }
                 }
             });

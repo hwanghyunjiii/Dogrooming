@@ -47,12 +47,23 @@ public class AdminService implements UserDetailsService {
 
 
     // 아이디 중복 체크
-    public boolean checkAdminID(String AdminID) {
-        return adminRepository.existsByAdminID(AdminID);
+    public boolean checkAdminID(String adminID) {
+        return adminRepository.existsByAdminID(adminID);
     }
 
     // 회원정보 수정
     public void modifyAdmin(Admin admin) {
         adminRepository.save(admin);
+    }
+
+    // 아이디 찾기
+    public String findAdminID(String name, String email){
+        Admin admin = adminRepository.findAdminByNameAndEmail(name, email);
+        String AdminID = "";
+        if(admin != null){
+            AdminID = admin.getAdminID();
+        }
+
+        return AdminID;
     }
 }

@@ -1,6 +1,7 @@
 package com.h2.dogrooming.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -59,7 +60,7 @@ public class AdminController {
     }
 
     @PostMapping(value = "/mypage")
-    public String modifyAdmin(Admin admin, Errors errors, Authentication authentication)
+    public String modifyAdmin(Admin admin, Authentication authentication)
     {
         // 로그인 여부 확인
         if(authentication == null)
@@ -93,17 +94,25 @@ public class AdminController {
             log.info(errors.getAllErrors().toString());
             return "page/signup";
         }
-
         adminService.registerAdmin(admin);
-
         return "redirect:/login";
     }
 
     // 아이디 체크
-    @PostMapping("/checkadminid")
+    @PostMapping("/check_adminid")
     @ResponseBody
-    public boolean checkAdminID(@RequestParam("adminID") String AdminID){
-        boolean result = adminService.checkAdminID(AdminID);
+    public boolean checkAdminID(@RequestParam("adminID") String adminID){
+        boolean result = adminService.checkAdminID(adminID);
         return result;
+    }
+
+    // 아이디 찾기
+    @PostMapping("/search_adminid")
+    @ResponseBody
+    public String checkAdminID(@RequestParam("name") String name,
+                               @RequestParam("email") String email)
+    {
+        String adminID = adminService.findAdminID(name, email);
+        return adminID;
     }
 }
