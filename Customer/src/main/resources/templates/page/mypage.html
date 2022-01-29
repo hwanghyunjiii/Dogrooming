@@ -22,29 +22,29 @@
                         <form id="form" class="row contact_form" th:action="@{/mypage}" method="post" novalidate="novalidate">
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                             <div class="col-md-12 form-group p_star">
-                                <span class="input_title">아이디</span>
+                                <span class="text-black-50 small ml-2">아이디</span>
                                 <input type="text" class="form-control" id="adminID" name="adminID" th:value="${admin.adminID}" maxlength="40" readonly/>
                             </div>
                             <div class="col-md-12 form-group p_star">
-                                <span class="input_title">비밀번호</span>
+                                <span class="text-black-50 small ml-2">비밀번호</span>
                                 <button type="submit" value="submit" class="genric-btn info-border radius w-100">
                                     비밀번호 변경하기
                                 </button>
                             </div>
                             <div class="col-md-12 form-group p_star">
-                                <span class="input_title">이름</span>
+                                <span class="text-black-50 small ml-2">이름</span>
                                 <input type="text" class="form-control" id="name" name="name" maxlength="20" th:value="${admin.name}"/>
                             </div>
                             <div class="col-md-12 form-group p_star">
-                                <span class="input_title">이메일</span>
+                                <span class="text-black-50 small ml-2">이메일</span>
                                 <input type="text" class="form-control" id="email" name="email" maxlength="50" th:value="${admin.email}"/>
                             </div>
                             <div class="col-md-12 form-group p_star">
-                                <span class="input_title">번호 (ex: 01012341234)</span>
+                                <span class="text-black-50 small ml-2">번호 (ex: 01012341234)</span>
                                 <input type="text" class="form-control numberOnly" id="phone" name="phone" maxlength="20" placeholder="번호 (ex: 01012341234)" th:value="${admin.phone}" readonly />
                             </div>
                             <div class="col-md-12 form-group p_star" style="display:none">
-                                <span class="input_title">인증번호</span>
+                                <span class="text-black-50 small ml-2">인증번호</span>
                                 <input type="text" class="form-control" id="authno" name="authno" placeholder=""/>
                             </div>
                             <div class="col-md-12 form-group">
