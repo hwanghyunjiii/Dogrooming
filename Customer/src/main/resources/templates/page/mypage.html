@@ -27,7 +27,7 @@
                             </div>
                             <div class="col-md-12 form-group p_star">
                                 <span class="input_title">비밀번호</span>
-                                <button type="submit" value="submit" class="genric-btn info-border radius w-100">
+                                <button type="submit" value="submit" class="genric-btn info-border radius w-100" data-toggle="modal" data-target="#resetPass">
                                     비밀번호 변경하기
                                 </button>
                             </div>
@@ -53,6 +53,8 @@
                                 </button>
                             </div>
                         </form>
+
+                        <th:block th:replace="_modal :: modal('resetPass')">modal</th:block>
                     </div>
                 </div>
             </div>
