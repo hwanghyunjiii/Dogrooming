@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}"
+      th:with="metaTitle='Login'">
+<head>
+</head>
+
+<body>
+<!-- content -->
+<th:block layout:fragment="content">
+
+    <!-- slider Area Start-->
+    <div th:include="components/sliderArea :: sliderArea('예약 조회')"></div>
+    <!-- slider Area End-->
+
+    <!-- 예약 횟수, 금액 Start -->
+    <section class="border-bottom mt-40">
+        <div class="container box_1170">
+            <h3 class="text-heading">노하람 고객님은
+                <span class="text-primary text-md">2회</span>
+                예약하셨고, 총
+                <span class="text-primary text-md">80,000원</span>
+                결제하셨어요.
+            </h3>
+        </div>
+    </section>
+    <!-- 예약 횟수, 금액 End -->
+
+    <!-- 예약조회 Start -->
+    <section class="cart_area section_padding">
+        <div class="container">
+            <div class="cart_inner">
+                <div class="table-responsive">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td>
+                                <div class="media">
+                                    <div>
+                                        <i class="fa fa-heart"></i>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="media-body">
+                                    <div>
+                                        <label class="mr-10">황현지 디자이너</label>
+                                        <label class="text-primary mr-10">진행 전</label>
+                                        <a href="#" class="genric-btn info radius small">예약 취소</a>
+                                    </div>
+                                    <div>
+                                        <span class="small">12.15 수    오전 11:30</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <label class="small">일반 커트 소형견</label>
+                                </div>
+                               <div>
+                                    <label>결제 30,000원</label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="media">
+                                    <div>
+                                        <i class="fa fa-heart"></i>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="media-body">
+                                    <div>
+                                        <label class="mr-10">황현지 디자이너</label>
+                                        <label class="text-primary mr-10">진행 전</label>
+                                        <a href="#" class="genric-btn info radius small">예약 취소</a>
+                                    </div>
+                                    <div>
+                                        <span class="small">12.15 수    오전 11:30</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <label class="small">일반 커트 소형견</label>
+                                </div>
+                                <div>
+                                    <label>결제 30,000원</label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="media">
+                                    <div>
+                                        <i class="fa fa-heart"></i>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="media-body">
+                                    <div>
+                                        <label class="mr-10">황현지 디자이너</label>
+                                        <label class="text-primary mr-10">진행 전</label>
+                                        <a href="#" class="genric-btn info radius small">예약 취소</a>
+                                    </div>
+                                    <div>
+                                        <span class="small">12.15 수    오전 11:30</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <label class="small">일반 커트 소형견</label>
+                                </div>
+                                <div>
+                                    <label>결제 30,000원</label>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div></section>
+    <!-- 예약조회 End -->
+
+</th:block>
+<!-- //content -->
+
+</body>
+</html>

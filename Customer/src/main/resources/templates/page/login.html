@@ -30,7 +30,7 @@
                                     <div class="col-md-12 form-group p_star">
                                         <input type="password" class="form-control" id="password" name="password"  maxlength="20" value="" placeholder="Password">
                                     </div>
-                                    <span class="login_err" th:text="${LoginFailMessage}"></span>
+                                    <span id="login_error" class="text-danger small ml-20" th:text="${LoginFailMessage}"></span>
                                     <div class="col-md-12 form-group">
                                         <button type="submit" value="submit" class="btn_3">
                                             로그인
@@ -149,11 +149,11 @@
         $(function (){
             $('#username').keydown(function()
             {
-                $('.login_err').text('');
+                $('#login_error').text('');
             });
 
             $('#password').keyup(function() {
-                $('.login_err').text('');
+                $('#login_error').text('');
             });
 
             $("#form").validate({

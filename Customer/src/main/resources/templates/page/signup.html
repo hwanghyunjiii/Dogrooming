@@ -24,8 +24,8 @@
                             <input type="hidden" name="adminID_chkflag" id="adminID_chkflag" th:value="N">
                             <div class="col-md-12 form-group p_star">
                                 <input type="text" class="form-control" id="adminID" name="adminID" placeholder="ID" maxlength="20" oninput="CheckAdminID()"/>
-                                <span class="id_ok">사용 가능한 아이디입니다.</span>
-                                <span class="id_already">누군가 이 아이디를 사용하고 있어요.</span>
+                                <span id="id_ok" class="text-primary small ml-2 d-none">사용 가능한 아이디입니다.</span>
+                                <span id="id_already" class="text-danger small ml-2 d-none">누군가 이 아이디를 사용하고 있어요.</span>
                             </div>
                             <div class="col-md-12 form-group p_star">
                                 <input type="password" class="form-control" id="password" name="password" maxlength="20" placeholder="비밀번호"/>
@@ -165,14 +165,14 @@
                     success:function(data){
                         if(data == false)
                         {
-                            $('.id_ok').css("display","inline-block");
-                            $('.id_already').css("display", "none");
+                            $('#id_ok').removeClass("d-none");
+                            $('#id_already').addClass("d-none")
                             $('#adminID_chkflag').val("Y");
                         }
                         else
                         {
-                            $('.id_already').css("display","inline-block");
-                            $('.id_ok').css("display", "none");
+                            $('#id_ok').addClass("d-none");
+                            $('#id_already').removeClass("d-none")
                             $('#adminID_chkflag').val("N")
                         }
                     },
@@ -183,8 +183,8 @@
             }
             else
             {
-                $('.id_already').css("display","none");
-                $('.id_ok').css("display", "none");
+                $('#id_ok').addClass("d-none");
+                $('#id_already').addClass("d-none")
                 $('#adminID_chkflag').val("N")
             }
         };
