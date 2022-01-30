@@ -25,10 +25,25 @@
             </h3>
         </div>
     </section>
+
     <!-- 예약 횟수, 금액 End -->
+    <section class="mt-40 mb-40">
+        <div class="container box_1170">
+            <label class="mr-10 mt-1">기간 선택</label>
+            <div class="row">
+                <div class="col-lg-2 col-md-3 col-4">
+                    <input type="text" id="datePicker_from" class="form-control bg-white" readonly>
+                </div>
+                ~
+                <div class="col-lg-2 col-md-3 col-4">
+                    <input type="text" id="datePicker_to" class="form-control bg-white" readonly>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- 예약조회 Start -->
-    <section class="cart_area section_padding">
+    <section class="cart_area">
         <div class="container">
             <div class="cart_inner">
                 <div class="table-responsive">
@@ -125,11 +140,59 @@
                     </table>
                 </div>
             </div>
-        </div></section>
+        </div>
+
+        <div class="blog_left_sidebar">
+            <nav class="blog-pagination justify-content-center d-flex">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a href="#" class="page-link" aria-label="Previous">
+                            <i class="ti-angle-left"></i>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a href="#" class="page-link">1</a>
+                    </li>
+                    <li class="page-item active">
+                        <a href="#" class="page-link">2</a>
+                    </li>
+                    <li class="page-item">
+                        <a href="#" class="page-link" aria-label="Next">
+                            <i class="ti-angle-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </section>
+
     <!-- 예약조회 End -->
 
-</th:block>
-<!-- //content -->
 
+    <!-- //content -->
+
+    <script type="text/javascript">
+        $(function(){
+
+            $('#datePicker_from').datepicker({
+                format: "yyyy-mm-dd",
+                language: "kr",
+                todayHighlight: true
+            });
+
+            $('#datePicker_to').datepicker({
+                format: "yyyy-mm-dd",
+                language: "kr",
+                todayHighlight: true
+            });
+
+            //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
+            $('#datePicker_from').datepicker('setDate', '-1Y');
+            $('#datePicker_to').datepicker('setDate', 'today');
+
+        });
+    </script>
+
+</th:block>
 </body>
 </html>
