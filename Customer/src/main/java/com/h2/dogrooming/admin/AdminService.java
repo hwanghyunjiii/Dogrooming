@@ -27,7 +27,7 @@ public class AdminService implements UserDetailsService {
         admin.setPassword(passwordEncoder.encode(admin.getPassword()));
 
         admin.setType(1);
-        admin.setUseState(1);
+        admin.setUseState(0);
 
         adminRepository.save(admin);
     }

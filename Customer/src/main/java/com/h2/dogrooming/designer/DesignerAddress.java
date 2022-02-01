@@ -1,5 +1,7 @@
 package com.h2.dogrooming.designer;
 
+import com.h2.dogrooming.admin.Admin;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -16,8 +18,9 @@ public class DesignerAddress {
     @GeneratedValue
     public Integer designerAddrId;
 
-    @Column(length = 40, nullable = false)
-    public String adminId;
+    @ManyToOne
+    @JoinColumn(name = "adminId")
+    public Admin admin;
 
     @Column(length = 256)
     public String address;
@@ -37,13 +40,15 @@ public class DesignerAddress {
 
     public DesignerAddress(){}
 
-    public DesignerAddress(Integer designerAddrId, String adminId, String address, String postcode, Integer useState, Date registerDate, Date updateDate){
+    @Builder
+    public DesignerAddress(Integer designerAddrId, Admin admin, String address, String postcode, Integer useState, Date registerDate, Date updateDate) {
         this.designerAddrId = designerAddrId;
-        this.adminId = adminId;
+        this.admin = admin;
         this.address = address;
         this.postcode = postcode;
         this.useState = useState;
         this.registerDate = registerDate;
         this.updateDate = updateDate;
     }
+
 }

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/layout}"
-      th:with="metaTitle='Login'">
+      th:with="metaTitle='예약조회'">
 <head>
 </head>
 
@@ -46,10 +46,10 @@
     <section class="cart_area">
         <div class="container">
             <div class="cart_inner">
-                <div class="table-responsive">
+                <div class="table-responsive" th:if="${!reservationList.isEmpty()}">
                     <table class="table">
                         <tbody>
-                        <tr>
+                        <tr th:each="reservation : ${reservationList}">
                             <td>
                                 <div class="media">
                                     <div>
@@ -59,80 +59,36 @@
                             </td>
                             <td>
                                 <div class="media-body">
-                                    <div>
-                                        <label class="mr-10">황현지 디자이너</label>
-                                        <label class="text-primary mr-10">진행 전</label>
+                                    <div th:if="${reservation.reservationState == 1 and reservation.useState == 0}">
+                                        <label class="mr-10" th:text="${reservation.seller_Admin.name}" ></label>
+                                        <label class="text-primary mr-10" >진행 전</label>
                                         <a href="#" class="genric-btn info radius small">예약 취소</a>
                                     </div>
+                                    <div th:if="${reservation.reservationState == 2 and reservation.useState == 0}">
+                                        <label class="mr-10" th:text="${reservation.seller_Admin.name}" ></label>
+                                        <label class="text-primary mr-10" >진행 중</label>
+                                        <a href="#" class="genric-btn info radius small">예약 완료 처리</a>
+                                    </div>
+                                    <div th:if="${reservation.reservationState == 3 and reservation.useState == 0}">
+                                        <label class="mr-10" th:text="${reservation.seller_Admin.name}" ></label>
+                                        <label class="text-primary mr-10" >완료</label>
+                                        <a href="#" class="genric-btn info radius small">리뷰 쓰기</a>
+                                    </div>
+                                    <div th:if="${reservation.useState == 1}">
+                                        <label class="mr-10" th:text="${reservation.seller_Admin.name}" ></label>
+                                        <label class="text-primary mr-10" >취소</label>
+                                    </div>
                                     <div>
-                                        <span class="small">12.15 수    오전 11:30</span>
+                                        <span class="small" th:text="${#calendars.format(reservation.reservationDate, 'yyyy년 MM월 dd일 HH시 mm분')}"></span>
                                     </div>
                                 </div>
                             </td>
                             <td>
                                 <div>
-                                    <label class="small">일반 커트 소형견</label>
+                                    <label class="small" th:text="${reservation.product.name}"></label>
                                 </div>
                                <div>
-                                    <label>결제 30,000원</label>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="media">
-                                    <div>
-                                        <i class="fa fa-heart"></i>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="media-body">
-                                    <div>
-                                        <label class="mr-10">황현지 디자이너</label>
-                                        <label class="text-primary mr-10">진행 전</label>
-                                        <a href="#" class="genric-btn info radius small">예약 취소</a>
-                                    </div>
-                                    <div>
-                                        <span class="small">12.15 수    오전 11:30</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                    <label class="small">일반 커트 소형견</label>
-                                </div>
-                                <div>
-                                    <label>결제 30,000원</label>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="media">
-                                    <div>
-                                        <i class="fa fa-heart"></i>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="media-body">
-                                    <div>
-                                        <label class="mr-10">황현지 디자이너</label>
-                                        <label class="text-primary mr-10">진행 전</label>
-                                        <a href="#" class="genric-btn info radius small">예약 취소</a>
-                                    </div>
-                                    <div>
-                                        <span class="small">12.15 수    오전 11:30</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                    <label class="small">일반 커트 소형견</label>
-                                </div>
-                                <div>
-                                    <label>결제 30,000원</label>
+                                   <label class="mr-2">결제</label><label th:text="${#numbers.formatInteger(reservation.product.amount, 0, 'COMMA')}"></label><label>원</label>
                                 </div>
                             </td>
                         </tr>
@@ -142,23 +98,51 @@
             </div>
         </div>
 
-        <div class="blog_left_sidebar">
-            <nav class="blog-pagination justify-content-center d-flex">
-                <ul class="pagination">
-                    <li class="page-item">
-                        <a href="#" class="page-link" aria-label="Previous">
-                            <i class="ti-angle-left"></i>
+        <div class="blog_left_sidebar" th:if="${!reservationList.isEmpty()}">
+            <nav class="blog-pagination justify-content-center d-flex"
+                 th:with="
+                        pageNumber = ${reservationList.pageable.pageNumber},
+                        pageSize = ${reservationList.pageable.pageSize},
+                        totalPages = ${reservationList.totalPages},
+                        startPage = ${T(Math).floor(pageNumber / pageSize) * pageSize + 1},
+                        tempEndPage = ${startPage + pageSize - 1},
+                        endPage = (${tempEndPage < totalPages ? tempEndPage : totalPages})"
+                    aria-label="Page navigation">
+                <ul class="pagination ">
+                    <!-- 처음으로 이동 -->
+                    <li th:classappend="${pageNumber < pageSize} ? 'disabled'" class="page-item">
+                        <a class="page-link" th:href="@{/(page=0)}">
+                            <span>&laquo;</span>
+                            <span class="sr-only">First</span>
                         </a>
                     </li>
-                    <li class="page-item">
-                        <a href="#" class="page-link">1</a>
+
+                    <!-- 이전으로 이동 -->
+                    <li th:classappend="${reservationList.first} ? 'disabled'" class="page-item">
+                        <a class="page-link" th:href="${reservationList.first} ? '#' : @{/reservation?(page=${pageNumber - 1})}" aria-label="Previous">
+                            <span aria-hidden="true">&lt;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
                     </li>
-                    <li class="page-item active">
-                        <a href="#" class="page-link">2</a>
+
+                    <!-- 특정 페이지로 이동 -->
+                    <li th:each="page: ${#numbers.sequence(startPage, endPage)}" th:classappend="${page == pageNumber + 1} ? 'active'" class="page-item">
+                        <a th:text="${page}" class="page-link" th:href="@{/reservation?(page=${page - 1})}"></a>
                     </li>
-                    <li class="page-item">
-                        <a href="#" class="page-link" aria-label="Next">
-                            <i class="ti-angle-right"></i>
+
+                    <!-- 다음으로 이동 -->
+                    <li th:classappend="${reservationList.last} ? 'disabled'" class="page-item">
+                        <a class="page-link" th:href="${reservationList.last} ? '#' : @{/reservation?(page=${pageNumber + 1})}" aria-label="Next">
+                            <span aria-hidden="true">&gt;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
+
+                    <!-- 마지막으로 이동 -->
+                    <li th:classappend=" ${T(Math).floor(totalPages / pageSize) * pageSize - 1 <= startPage} ? 'disabled'" class="page-item">
+                        <a class="page-link" th:href="@{/(page=${totalPages - 1})}">
+                            <span>&raquo;</span>
+                            <span class="sr-only">Last</span>
                         </a>
                     </li>
                 </ul>

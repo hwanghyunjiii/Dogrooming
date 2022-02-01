@@ -1,5 +1,6 @@
 package com.h2.dogrooming.admin;
 
+import com.h2.dogrooming.designer.Designer;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,9 +18,6 @@ import java.util.Date;
 public class Admin {
 
     @Id
-    @GeneratedValue
-    private long adminNo; // id
-
     @NotBlank(message = "아이디를 입력해주세요.")
     @Column(length = 40, unique = true, nullable = false)
     private String adminID; // 아이디
@@ -55,8 +53,8 @@ public class Admin {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateDate; //수정날짜
 
-    public Admin(long adminNo, String adminID, String password, Integer type, String name, String email, String phone, Integer useState, Date registerDate, Date updateDate) {
-        this.adminNo = adminNo;
+    @Builder
+    public Admin(String adminID, String password, Integer type, String name, String email, String phone, Integer useState, Date registerDate, Date updateDate) {
         this.adminID = adminID;
         this.password = password;
         this.type = type;
@@ -71,5 +69,4 @@ public class Admin {
     public Admin() {
 
     }
-
 }

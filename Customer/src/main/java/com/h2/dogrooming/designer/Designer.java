@@ -1,5 +1,6 @@
 package com.h2.dogrooming.designer;
 
+import com.h2.dogrooming.admin.Admin;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -10,14 +11,16 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
-public class Designer {
+public class Designer{
 
     @Id
     @Column(nullable = false)
-    private Integer adminNo; // 번호
+    @GeneratedValue
+    private Integer designerId;
 
-    @Column(length = 40, unique = true, nullable = false)
-    private String adminId; // 아이디
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "adminId", nullable = false)
+    private Admin admin; // 아이디
 
     @Column(length = 256)
     private String profile; // 프로필
@@ -43,8 +46,9 @@ public class Designer {
 
     public Designer(){}
 
-    public Designer(String adminId, String profile, String title, String content, String name, Integer useState, Date registerDate, Date updateDate){
-        this.adminId = adminId;
+    public Designer(Integer designerId, Admin admin, String profile, String title, String content, String name, Integer useState, Date registerDate, Date updateDate) {
+        this.designerId = designerId;
+        this.admin = admin;
         this.profile = profile;
         this.title = title;
         this.content = content;

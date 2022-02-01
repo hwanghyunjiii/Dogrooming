@@ -1,5 +1,9 @@
 package com.h2.dogrooming.reservation;
 
+import com.h2.dogrooming.admin.Admin;
+import com.h2.dogrooming.designer.Designer;
+import com.h2.dogrooming.product.Product;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -14,24 +18,6 @@ public class Reservation {
     @Id
     @GeneratedValue
     private Integer reservationId;
-
-    @Column(nullable = false)
-    private Integer productId;
-
-    @Column(length = 40, nullable = false)
-    private String buyerId;
-
-    @Column(length = 40, nullable = false)
-    private String sellerId;
-
-    @Column(length = 10, nullable = false)
-    private String name;
-
-    @Column(length = 20, nullable = false)
-    private String phone;
-
-    @Column(nullable = false)
-    private Double amount;
 
     @Column(nullable = false)
     private Integer reservationState;
@@ -61,16 +47,23 @@ public class Reservation {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateDate;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sellerId", nullable = false)
+    private Admin seller_Admin;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "buyerId", nullable = false)
+    private Admin buyer_Admin;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "productId", nullable = false)
+    private Product product;
+
     public Reservation(){}
 
-    public Reservation(Integer reservationId, Integer productId, String buyerId, String sellerId, String name, String phone, Double amount, Integer reservationState, Integer useState, Date reservationDate, String postcode, String address, String addressDtl, String ymd, Date registerDate, Date updateDate){
+    @Builder
+    public Reservation(Integer reservationId, Integer reservationState, Integer useState, Date reservationDate, String postcode, String address, String addressDtl, String ymd, Date registerDate, Date updateDate, Admin seller_Admin, Admin buyer_Admin, Product product) {
         this.reservationId = reservationId;
-        this.productId = productId;
-        this.buyerId = buyerId;
-        this.sellerId = sellerId;
-        this.name = name;
-        this.phone = phone;
-        this.amount = amount;
         this.reservationState = reservationState;
         this.useState = useState;
         this.reservationDate = reservationDate;
@@ -80,5 +73,8 @@ public class Reservation {
         this.ymd = ymd;
         this.registerDate = registerDate;
         this.updateDate = updateDate;
+        this.seller_Admin = seller_Admin;
+        this.buyer_Admin = buyer_Admin;
+        this.product = product;
     }
 }
