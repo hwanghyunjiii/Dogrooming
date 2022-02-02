@@ -18,9 +18,11 @@
     <section class="border-bottom mt-40">
         <div class="container box_1170">
             <h3 class="text-heading">노하람 고객님은
-                <span class="text-primary text-md">2회</span>
+                <span class="text-primary text-md" th:text="${reservationList.totalElements}"></span>
+                <span class="text-primary text-md">회</span>
                 예약하셨고, 총
-                <span class="text-primary text-md">80,000원</span>
+                <span class="text-primary text-md" th:text="${sumAmount}"></span>
+                <span class="text-primary text-md">원</span>
                 결제하셨어요.
             </h3>
         </div>

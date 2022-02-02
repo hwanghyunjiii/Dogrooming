@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -46,9 +47,6 @@ public class ReservationController {
         UserDetails userDetails = (UserDetails)authentication.getPrincipal();
         Admin currentAdmin = adminService.getAdmin(userDetails.getUsername());
 
-        log.info("dateFrom: " + dateFrom);
-        log.info("dateTo: " + dateTo);
-
         if(dateFrom == null || dateFrom == "") {
             // 일년전 날짜 구하기
             Calendar mon = Calendar.getInstance();
@@ -65,16 +63,18 @@ public class ReservationController {
 
         SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-        log.info("dateFrom: " + transFormat.parse(dateFrom));
-        log.info("dateTo: " + transFormat.parse(dateTo));
-
         // 로그인된 사용자의 예약 정보 조회
         Page<Reservation> reservationList = reservationService.getReservationList(currentAdmin.getAdminId(), transFormat.parse(dateFrom), transFormat.parse(dateTo), pageable);
+
+        // 로그인된 사용자의 예약 정보 금액 조회
+        Integer sumAmount = reservationService.getReservationSummary(currentAdmin.getAdminId(), transFormat.parse(dateFrom), transFormat.parse(dateTo));
+        DecimalFormat decimalFormat = new DecimalFormat("###,###");
 
         //add data to view
         model.addAttribute("reservationList", reservationList);
         model.addAttribute("dateFrom", dateFrom);
         model.addAttribute("dateTo", dateTo);
+        model.addAttribute("sumAmount", decimalFormat.format(sumAmount));
 
         return "page/reservation";
     }
