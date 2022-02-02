@@ -6,8 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
+import java.util.Date;
 
 @Service
 @AllArgsConstructor
@@ -17,8 +16,8 @@ public class ReservationService {
     ReservationRepository reservationRepository;
 
     // 예약 리스트 조회
-    public Page<Reservation> getReservationList(String buyerId, Pageable pageable) {
-        return reservationRepository.findAllByBuyerID(buyerId, pageable);
+    public Page<Reservation> getReservationList(String buyerId, Date dateFrom, Date dateTo, Pageable pageable) {
+        return reservationRepository.findAllByBuyerId(buyerId, dateFrom, dateTo, pageable);
     }
 
 }

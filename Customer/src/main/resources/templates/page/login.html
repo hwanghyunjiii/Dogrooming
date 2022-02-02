@@ -56,7 +56,7 @@
     <div class="modal fade" id="modal_search_adminid" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
          aria-hidden="true">
 
-        <form id="form_search_adminid" class="row contact_form" novalidate="novalidate">
+        <form id="form_search_adminId" class="row contact_form" novalidate="novalidate">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -98,7 +98,7 @@
     <script type="text/javascript">
 
         // 아이디 찾기
-        function Search_AdminID()
+        function Search_AdminId()
         {
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
@@ -106,7 +106,7 @@
             var email = $('#email').val();
 
             $.ajax({
-                url:'/search_adminid',
+                url:'/search_adminId',
                 type:'post', //POST 방식으로 전달
                 data:{
                     name: name,
@@ -165,7 +165,7 @@
                     username: {
                         required : true,
                         minlength : 6,
-                        adminID_rule : true
+                        adminId_rule : true
                     },
                     password: {
                         required : true,
@@ -179,7 +179,7 @@
                     username: {
                         required : "ID를 입력해주세요.",
                         minlength : "최소 {0}글자 이상 입력해주세요.",
-                        adminID_rule : "영문 혹은 숫자만 입력해주세요."
+                        adminId_rule : "영문 혹은 숫자만 입력해주세요."
                     },
                     password: {
                         required : "비밀번호를 입력해주세요.",
@@ -190,9 +190,9 @@
                 }
             });
 
-            $("#form_search_adminid").validate({
+            $("#form_search_adminId").validate({
                 submitHandler: function(form) {
-                    Search_AdminID();
+                    Search_AdminId();
                 },
                 // 체크할 항목들의 룰 설정
                 rules: {

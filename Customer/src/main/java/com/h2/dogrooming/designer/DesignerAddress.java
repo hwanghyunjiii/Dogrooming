@@ -18,8 +18,8 @@ public class DesignerAddress {
     @GeneratedValue
     public Integer designerAddrId;
 
-    @ManyToOne
-    @JoinColumn(name = "adminId")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "adminNo")
     public Admin admin;
 
     @Column(length = 256)

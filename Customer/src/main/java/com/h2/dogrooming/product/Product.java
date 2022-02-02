@@ -1,5 +1,6 @@
 package com.h2.dogrooming.product;
 
+import com.h2.dogrooming.admin.Admin;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -16,8 +17,9 @@ public class Product {
     @GeneratedValue
     private Integer productId;
 
-    @Column(length = 40, nullable = false)
-    private String adminId;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "adminNo")
+    private Admin admin; // 아이디
 
     @Column(length = 10, nullable = false)
     private String name;
@@ -43,9 +45,9 @@ public class Product {
 
     public Product(){}
 
-    public Product(Integer productId, String adminId, String name, String description, Integer dogType, Double amount, Integer useState, Date registerDate, Date updateDate){
+    public Product(Integer productId, Admin admin, String name, String description, Integer dogType, Double amount, Integer useState, Date registerDate, Date updateDate){
         this.productId = productId;
-        this.adminId = adminId;
+        this.admin = admin;
         this.name = name;
         this.description = description;
         this.dogType = dogType;

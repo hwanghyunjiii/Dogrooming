@@ -10,17 +10,21 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Getter
 @Setter
-public class Admin {
+public class Admin{
 
     @Id
+    @GeneratedValue
+    private Integer adminNo;
+
     @NotBlank(message = "아이디를 입력해주세요.")
     @Column(length = 40, unique = true, nullable = false)
-    private String adminID; // 아이디
+    private String adminId; // 아이디
 
     @NotBlank(message = "비밀번호를 입력해주세요.")
     @Column(length = 256, nullable = false)
@@ -53,9 +57,9 @@ public class Admin {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateDate; //수정날짜
 
-    @Builder
-    public Admin(String adminID, String password, Integer type, String name, String email, String phone, Integer useState, Date registerDate, Date updateDate) {
-        this.adminID = adminID;
+    public Admin(Integer adminNo, String adminId, String password, Integer type, String name, String email, String phone, Integer useState, Date registerDate, Date updateDate) {
+        this.adminNo = adminNo;
+        this.adminId = adminId;
         this.password = password;
         this.type = type;
         this.name = name;
@@ -65,6 +69,9 @@ public class Admin {
         this.registerDate = registerDate;
         this.updateDate = updateDate;
     }
+
+    @Builder
+
 
     public Admin() {
 

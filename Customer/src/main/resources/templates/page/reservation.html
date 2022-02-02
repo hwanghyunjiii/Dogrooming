@@ -26,21 +26,25 @@
         </div>
     </section>
 
-    <!-- 예약 횟수, 금액 End -->
-    <section class="mt-40 mb-40">
-        <div class="container box_1170">
-            <label class="mr-10 mt-1">기간 선택</label>
-            <div class="row">
-                <div class="col-lg-2 col-md-3 col-4">
-                    <input type="text" id="datePicker_from" class="form-control bg-white" readonly>
-                </div>
-                ~
-                <div class="col-lg-2 col-md-3 col-4">
-                    <input type="text" id="datePicker_to" class="form-control bg-white" readonly>
+    <form id="form" th:action th:method="post">
+        <input id="page" name="page" class="d-none" th:value="${reservationList.pageable.pageNumber}">
+        <!-- 예약 횟수, 금액 End -->
+        <section class="mt-40 mb-40">
+            <div class="container box_1170">
+                <label class="mr-10 mt-1">기간 선택</label>
+                <div class="row">
+                    <div class="col-lg-2 col-md-3 col-4">
+                        <input type="text" id="dateFrom" name="dateFrom" class="form-control bg-white" th:value="${dateFrom}" readonly>
+                    </div>
+                    ~
+                    <div class="col-lg-2 col-md-3 col-4">
+                        <input type="text" id="dateTo" name="dateTo" class="form-control bg-white" th:value="${dateTo}" readonly>
+                    </div>
+                    <a href="javascript:search();" class="genric-btn info radius">조회</a>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </form>
 
     <!-- 예약조회 Start -->
     <section class="cart_area">
@@ -108,8 +112,9 @@
                         tempEndPage = ${startPage + pageSize - 1},
                         endPage = (${tempEndPage < totalPages ? tempEndPage : totalPages})"
                     aria-label="Page navigation">
-                <ul class="pagination ">
+                <ul class="pagination">
                     <!-- 처음으로 이동 -->
+
                     <li th:classappend="${pageNumber < pageSize} ? 'disabled'" class="page-item">
                         <a class="page-link" th:href="@{/(page=0)}">
                             <span>&laquo;</span>
@@ -119,7 +124,7 @@
 
                     <!-- 이전으로 이동 -->
                     <li th:classappend="${reservationList.first} ? 'disabled'" class="page-item">
-                        <a class="page-link" th:href="${reservationList.first} ? '#' : @{/reservation?(page=${pageNumber - 1})}" aria-label="Previous">
+                        <a class="page-link" th:onclick="|javascript: ${reservationList.first} ? '#' : page(${pageNumber - 1})|" aria-label="Previous">
                             <span aria-hidden="true">&lt;</span>
                             <span class="sr-only">Previous</span>
                         </a>
@@ -127,12 +132,12 @@
 
                     <!-- 특정 페이지로 이동 -->
                     <li th:each="page: ${#numbers.sequence(startPage, endPage)}" th:classappend="${page == pageNumber + 1} ? 'active'" class="page-item">
-                        <a th:text="${page}" class="page-link" th:href="@{/reservation?(page=${page - 1})}"></a>
+                        <a th:text="${page}" class="page-link" th:onclick="|javascript:page(${page - 1})|"></a>
                     </li>
 
                     <!-- 다음으로 이동 -->
                     <li th:classappend="${reservationList.last} ? 'disabled'" class="page-item">
-                        <a class="page-link" th:href="${reservationList.last} ? '#' : @{/reservation?(page=${pageNumber + 1})}" aria-label="Next">
+                        <a class="page-link" th:onclick="|javascript:${reservationList.last} ? '#' : page(${pageNumber + 1})|" aria-label="Next">
                             <span aria-hidden="true">&gt;</span>
                             <span class="sr-only">Next</span>
                         </a>
@@ -140,7 +145,7 @@
 
                     <!-- 마지막으로 이동 -->
                     <li th:classappend=" ${T(Math).floor(totalPages / pageSize) * pageSize - 1 <= startPage} ? 'disabled'" class="page-item">
-                        <a class="page-link" th:href="@{/(page=${totalPages - 1})}">
+                        <a class="page-link" th:onclick="|javascript:page(${totalPages - 1})|">
                             <span>&raquo;</span>
                             <span class="sr-only">Last</span>
                         </a>
@@ -148,33 +153,42 @@
                 </ul>
             </nav>
         </div>
-    </section>
 
+    </section>
     <!-- 예약조회 End -->
 
 
     <!-- //content -->
 
-    <script type="text/javascript">
+    <script th:inline="javascript">
         $(function(){
 
-            $('#datePicker_from').datepicker({
+            $('#dateFrom').datepicker({
                 format: "yyyy-mm-dd",
                 language: "kr",
                 todayHighlight: true
             });
 
-            $('#datePicker_to').datepicker({
+            $('#dateTo').datepicker({
                 format: "yyyy-mm-dd",
                 language: "kr",
                 todayHighlight: true
             });
 
             //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
-            $('#datePicker_from').datepicker('setDate', '-1Y');
-            $('#datePicker_to').datepicker('setDate', 'today');
+            $('#dateFrom').datepicker('setDate', [[${dateFrom}]]);
+            $('#dateTo').datepicker('setDate', [[${dateTo}]]);
 
         });
+
+        function search(){
+            $('#form').submit();
+        }
+
+        function page(number){
+            $('#page').val(number);
+            $('#form').submit();
+        }
     </script>
 
 </th:block>

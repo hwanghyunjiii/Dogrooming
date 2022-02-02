@@ -19,7 +19,7 @@ public class Designer{
     private Integer designerId;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "adminId", nullable = false)
+    @JoinColumn(name = "adminNo")
     private Admin admin; // 아이디
 
     @Column(length = 256)

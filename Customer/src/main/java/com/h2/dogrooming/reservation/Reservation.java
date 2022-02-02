@@ -48,15 +48,15 @@ public class Reservation {
     private Date updateDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sellerId", nullable = false)
+    @JoinColumn(name = "sellerNo")
     private Admin seller_Admin;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "buyerId", nullable = false)
+    @JoinColumn(name = "buyerNo")
     private Admin buyer_Admin;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "productId", nullable = false)
+    @JoinColumn(name = "productId")
     private Product product;
 
     public Reservation(){}
