@@ -1,14 +1,12 @@
 package com.h2.dogrooming.reservation;
 
 import lombok.AllArgsConstructor;
-import net.bytebuddy.build.Plugin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.Map;
 
 @Service
 @AllArgsConstructor
@@ -27,4 +25,8 @@ public class ReservationService {
         return reservationRepository.findAllByBuyerIdSummary(buyerId, dateFrom, dateTo);
     }
 
+    // 예약 상세 조회
+    public Reservation getReservationDetail(Integer reservationId){
+        return reservationRepository.findReservationByReservationId(reservationId);
+    }
 }

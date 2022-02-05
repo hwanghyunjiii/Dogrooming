@@ -1,6 +1,7 @@
 package com.h2.dogrooming.admin;
 
 import com.h2.dogrooming.designer.Designer;
+import com.h2.dogrooming.designer.DesignerAddress;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,8 +11,9 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -57,6 +59,7 @@ public class Admin{
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateDate; //수정날짜
 
+    @Builder
     public Admin(Integer adminNo, String adminId, String password, Integer type, String name, String email, String phone, Integer useState, Date registerDate, Date updateDate) {
         this.adminNo = adminNo;
         this.adminId = adminId;
@@ -69,9 +72,6 @@ public class Admin{
         this.registerDate = registerDate;
         this.updateDate = updateDate;
     }
-
-    @Builder
-
 
     public Admin() {
 

@@ -20,7 +20,6 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-8">
                         <form id="form" class="row contact_form" th:action="@{/signup}" method="post" novalidate="novalidate">
-                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                             <input type="hidden" name="adminId_chkflag" id="adminId_chkflag" th:value="N">
                             <div class="col-md-12 form-group p_star">
                                 <input type="text" class="form-control" id="adminId" name="adminId" placeholder="ID" maxlength="20" oninput="CheckAdminId()"/>
@@ -147,8 +146,6 @@
         })
 
         function CheckAdminId(){
-            var token = $("meta[name='_csrf']").attr("content");
-            var header = $("meta[name='_csrf_header']").attr("content");
             var adminId = $('#adminId').val();
 
             if(adminId.length >= 6 && /^[a-zA-Z0-9]*$/.test(adminId)) {
@@ -160,7 +157,7 @@
                     beforeSend : function(xhr)
                     {
                         /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
-                        xhr.setRequestHeader(header, token);
+                        xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
                     },
                     success:function(data){
                         if(data == false)

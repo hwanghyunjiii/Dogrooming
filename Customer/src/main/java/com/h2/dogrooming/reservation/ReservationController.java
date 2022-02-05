@@ -1,5 +1,7 @@
 package com.h2.dogrooming.reservation;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.h2.dogrooming.admin.Admin;
 import com.h2.dogrooming.admin.AdminService;
 import lombok.extern.slf4j.Slf4j;
@@ -8,13 +10,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -30,6 +31,8 @@ public class ReservationController {
 
     @Autowired
     AdminService adminService;
+
+    ObjectMapper mapper;
 
     @RequestMapping(value = "/reservation")
     public String goReservationList( Authentication authentication
@@ -74,8 +77,17 @@ public class ReservationController {
         model.addAttribute("reservationList", reservationList);
         model.addAttribute("dateFrom", dateFrom);
         model.addAttribute("dateTo", dateTo);
-        model.addAttribute("sumAmount", decimalFormat.format(sumAmount));
+        model.addAttribute("sumAmount", sumAmount != null ? decimalFormat.format(sumAmount) : 0);
+        model.addAttribute("adminName", currentAdmin.getName());
 
         return "page/reservation";
+    }
+
+    // 예약 상세내역 조회
+    @PostMapping("/reservationDetail")
+    @ResponseBody
+    public Reservation getReservationDetail(@RequestParam("reservationId") Integer reservationId){
+        Reservation reservation = reservationService.getReservationDetail(reservationId);
+        return reservation;
     }
 }

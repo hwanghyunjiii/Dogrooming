@@ -17,7 +17,9 @@
     <!-- 예약 횟수, 금액 Start -->
     <section class="border-bottom mt-40">
         <div class="container box_1170">
-            <h3 class="text-heading">노하람 고객님은
+            <h3 class="text-heading">
+                <span class="text-md" th:text="${adminName}"></span>
+                 고객님은
                 <span class="text-primary text-md" th:text="${reservationList.totalElements}"></span>
                 <span class="text-primary text-md">회</span>
                 예약하셨고, 총
@@ -42,7 +44,7 @@
                     <div class="col-lg-2 col-md-3 col-4">
                         <input type="text" id="dateTo" name="dateTo" class="form-control bg-white" th:value="${dateTo}" readonly>
                     </div>
-                    <a href="javascript:search();" class="genric-btn info radius">조회</a>
+                    <a href="javascript:$('#form').submit();" class="genric-btn info radius">조회</a>
                 </div>
             </div>
         </section>
@@ -52,10 +54,10 @@
     <section class="cart_area">
         <div class="container">
             <div class="cart_inner">
-                <div class="table-responsive" th:if="${!reservationList.isEmpty()}">
+                <div class="table-responsive" >
                     <table class="table">
                         <tbody>
-                        <tr th:each="reservation : ${reservationList}">
+                        <tr th:if="${!reservationList.isEmpty()}" th:each="reservation : ${reservationList}" th:onclick="|javascript:reservationDetail(${reservation.getReservationId()});|">
                             <td>
                                 <div class="media">
                                     <div>
@@ -66,26 +68,26 @@
                             <td>
                                 <div class="media-body">
                                     <div th:if="${reservation.reservationState == 1 and reservation.useState == 0}">
-                                        <label class="mr-10" th:text="${reservation.seller_Admin.name}" ></label>
+                                        <label class="mr-10" th:text="${reservation.seller_Admin.name + ' 디자이너'}"></label>
                                         <label class="text-primary mr-10" >진행 전</label>
                                         <a href="#" class="genric-btn info radius small">예약 취소</a>
                                     </div>
                                     <div th:if="${reservation.reservationState == 2 and reservation.useState == 0}">
-                                        <label class="mr-10" th:text="${reservation.seller_Admin.name}" ></label>
+                                        <label class="mr-10" th:text="${reservation.seller_Admin.name + ' 디자이너'}"></label>
                                         <label class="text-primary mr-10" >진행 중</label>
                                         <a href="#" class="genric-btn info radius small">예약 완료 처리</a>
                                     </div>
                                     <div th:if="${reservation.reservationState == 3 and reservation.useState == 0}">
-                                        <label class="mr-10" th:text="${reservation.seller_Admin.name}" ></label>
+                                        <label class="mr-10" th:text="${reservation.seller_Admin.name + ' 디자이너'}"></label>
                                         <label class="text-primary mr-10" >완료</label>
                                         <a href="#" class="genric-btn info radius small">리뷰 쓰기</a>
                                     </div>
                                     <div th:if="${reservation.useState == 1}">
-                                        <label class="mr-10" th:text="${reservation.seller_Admin.name}" ></label>
+                                        <label class="mr-10" th:text="${reservation.seller_Admin.name + ' 디자이너'}"></label>
                                         <label class="text-primary mr-10" >취소</label>
                                     </div>
                                     <div>
-                                        <span class="small" th:text="${#calendars.format(reservation.reservationDate, 'yyyy년 MM월 dd일 HH시 mm분')}"></span>
+                                        <span class="small" th:text="${reservation.reservationDate}"></span>
                                     </div>
                                 </div>
                             </td>
@@ -96,6 +98,11 @@
                                <div>
                                    <label class="mr-2">결제</label><label th:text="${#numbers.formatInteger(reservation.product.amount, 0, 'COMMA')}"></label><label>원</label>
                                 </div>
+                            </td>
+                        </tr>
+                        <tr th:unless="${!reservationList.isEmpty()}">
+                            <td colspan="3">
+                                조회된 결과가 없습니다.
                             </td>
                         </tr>
                         </tbody>
@@ -159,12 +166,97 @@
     </section>
     <!-- 예약조회 End -->
 
+    <!--================ 상세내역 Modal start ====================-->
+    <div class="modal fade" id="modal_reservation_detail" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">예약 상세 내역</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <section class="cart_area">
+                        <div class="container">
+                            <div class="cart_inner">
+                                <label class="mr-10 mt-1">예약 정보</label>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="media">
+                                                    <div>
+                                                        <i class="fa fa-heart"></i>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="media-body">
+                                                    <div>
+                                                        <label class="mr-10" id="detail-name"></label>
+                                                        <label class="text-primary mr-10" id="detail-status"></label>
+                                                        <a href="#" class="genric-btn info radius small" id="detail-btn"></a>
+                                                    </div>
+                                                    <div>
+                                                        <span class="small" id="detail-reservationDate"></span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="col-4">
+                                                <div>
+                                                    <label class="small" id="detail-product-name"></label>
+                                                </div>
+                                                <div>
+                                                    <label class="mr-2">결제</label><label id="detail-product-amount"></label><label>원</label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="cart_inner">
+                                <label class="mr-10 mt-1">예약 장소</label>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="media-body">
+                                                    <div class="row">
+                                                        <label class="col-3 small">우편 번호</label>
+                                                        <label class="col-9 small" id="detail-postcode"></label>
+                                                    </div>
+                                                    <div class="row">
+                                                        <label class="col-3 small">주소</label>
+                                                        <label class="col-9 small" id="detail-address"></label>
+                                                    </div>
+                                                    <div class="row">
+                                                        <label class="col-3 small">상세 주소</label>
+                                                        <label class="col-9 small" id="detail-addressDtl"></label>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--================ 상세내역 Modal end ====================-->
 
     <!-- //content -->
 
     <script th:inline="javascript">
-        $(function(){
 
+        $(document).ready(function(){
             $('#dateFrom').datepicker({
                 format: "yyyy-mm-dd",
                 language: "kr",
@@ -180,16 +272,66 @@
             //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
             $('#dateFrom').datepicker('setDate', [[${dateFrom}]]);
             $('#dateTo').datepicker('setDate', [[${dateTo}]]);
-
         });
 
-        function search(){
-            $('#form').submit();
-        }
-
+        // 페이징
         function page(number){
             $('#page').val(number);
             $('#form').submit();
+        }
+
+        function reservationDetail(reservationId)
+        {
+            $.ajax({
+                url: "/reservationDetail",
+                type: "POST",
+                data: {reservationId: reservationId},
+                beforeSend : function(xhr)
+                {
+                    /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+                    xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+                },
+                success:function(data){
+                    $('#detail-name').text(data.seller_Admin.name + " 디자이너");
+
+                    if(data.useState == 2)
+                    {
+                        $('#detail-status').text("진행 전");
+                        $('#detail-btn').addClass("d-none");
+                    }
+                    else if(data.reservationState == 1)
+                    {
+                        $('#detail-status').text("진행 전");
+                        $('#detail-btn').text("예약 취소");
+                        $('#detail-btn').removeClass("d-none");
+                    }
+                    else if(data.reservationState == 2)
+                    {
+                        $('#detail-status').text("진행 중");
+                        $('#detail-btn').text("예약 완료 처리");
+                        $('#detail-btn').removeClass("d-none");
+                    }
+                    else if(data.reservationState == 3)
+                    {
+                        $('#detail-status').text("완료");
+                        $('#detail-btn').text("리뷰 쓰기");
+                        $('#detail-btn').removeClass("d-none");
+                    }
+
+                    $('#detail-product-amount').text(comma(data.product.amount));
+                    $('#detail-reservationDate').text(data.reservationDate);
+                    $('#detail-product-name').text(data.product.name);
+                    $('#detail-postcode').text(data.postcode);
+                    $('#detail-address').text(data.address);
+                    $('#detail-addressDtl').text(data.addressDtl);
+                    $('#modal_reservation_detail').modal();
+                },
+                error:function(data){
+                    MsgBox.Alert("오류 발생");
+                }
+            });
+
+
         }
     </script>
 

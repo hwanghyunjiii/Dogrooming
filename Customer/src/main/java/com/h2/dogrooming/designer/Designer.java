@@ -18,7 +18,7 @@ public class Designer{
     @GeneratedValue
     private Integer designerId;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "adminNo")
     private Admin admin; // 아이디
 

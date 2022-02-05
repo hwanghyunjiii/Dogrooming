@@ -1,5 +1,7 @@
 package com.h2.dogrooming.reservation;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.h2.dogrooming.admin.Admin;
 import com.h2.dogrooming.designer.Designer;
 import com.h2.dogrooming.product.Product;
@@ -7,6 +9,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -26,6 +30,7 @@ public class Reservation {
     private Integer useState;
 
     @Column(nullable = false)
+    @JsonFormat(pattern = "yyyy년 MM월 dd일 HH시 mm분")
     private Date reservationDate;
 
     @Column(length = 10)
@@ -53,9 +58,10 @@ public class Reservation {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "buyerNo")
+    @JsonIgnore
     private Admin buyer_Admin;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "productId")
     private Product product;
 

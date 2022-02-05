@@ -100,22 +100,17 @@
         // 아이디 찾기
         function Search_AdminId()
         {
-            var token = $("meta[name='_csrf']").attr("content");
-            var header = $("meta[name='_csrf_header']").attr("content");
-            var name = $('#name').val();
-            var email = $('#email').val();
-
             $.ajax({
                 url:'/search_adminId',
                 type:'post', //POST 방식으로 전달
                 data:{
-                    name: name,
-                    email: email
+                    name: $('#name').val(),
+                    email: $('#email').val()
                 },
                 beforeSend : function(xhr)
                 {
                     /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
-                    xhr.setRequestHeader(header, token);
+                    xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
                 },
                 success:function(data){
                     var message = "";
@@ -135,7 +130,7 @@
                     MsgBox.Alert(message);
                 },
                 error:function(){
-                    alert("에러 발생");
+                    MsgBox.Alert("에러 발생");
                 }
             });
         }

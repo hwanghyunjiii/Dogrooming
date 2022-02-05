@@ -1,5 +1,6 @@
 package com.h2.dogrooming.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.h2.dogrooming.admin.Admin;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +20,7 @@ public class Product {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "adminNo")
+    @JsonIgnore
     private Admin admin; // 아이디
 
     @Column(length = 10, nullable = false)

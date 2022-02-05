@@ -40,6 +40,15 @@
     <script th:src="@{/js/bootstrap-datepicker.kr.min.js}"></script>
 
     <script type="text/javascript">
+        // 특정 테이블의 row에 마우스 오버시 색상변경
+        $( ".table tbody tr" ).on( "mouseover", function() {
+            $( this ).css( "background-color", "#edf3fd" );
+        });
+
+        $(".table tbody tr" ).on( "mouseleave", function() {
+            $( this ).css( "background-color", "white" );
+        });
+
         // 아이디 유효성 검사 (숫자와 영문 가능)
         $.validator.addMethod('adminId_rule', function (value, element) {
             if (/^[a-zA-Z0-9]*$/.test(value)) {
@@ -144,6 +153,12 @@
                     else if(value == 2) nohandler();
                 }).catch(function() {});
             },
+        }
+
+        //콤마찍기
+        function comma(str) {
+            str = String(str);
+            return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
         }
 
     </script>
