@@ -70,24 +70,24 @@
                                     <div th:if="${reservation.reservationState == 1 and reservation.useState == 0}">
                                         <label class="mr-10" th:text="${reservation.seller_Admin.name + ' 디자이너'}"></label>
                                         <label class="text-primary mr-10" >진행 전</label>
-                                        <a href="#" class="genric-btn info radius small">예약 취소</a>
+                                        <a onclick="event.cancelBubble=true" th:href="|javascript: reservationCancel(${reservation.reservationId})|" class="genric-btn info radius small">예약 취소</a>
                                     </div>
                                     <div th:if="${reservation.reservationState == 2 and reservation.useState == 0}">
                                         <label class="mr-10" th:text="${reservation.seller_Admin.name + ' 디자이너'}"></label>
                                         <label class="text-primary mr-10" >진행 중</label>
-                                        <a href="#" class="genric-btn info radius small">예약 완료 처리</a>
+                                        <a onclick="event.cancelBubble=true" href="#" class="genric-btn info radius small">예약 완료 처리</a>
                                     </div>
                                     <div th:if="${reservation.reservationState == 3 and reservation.useState == 0}">
                                         <label class="mr-10" th:text="${reservation.seller_Admin.name + ' 디자이너'}"></label>
                                         <label class="text-primary mr-10" >완료</label>
-                                        <a href="#" class="genric-btn info radius small">리뷰 쓰기</a>
+                                        <a onclick="event.cancelBubble=true" href="#" class="genric-btn info radius small">리뷰 쓰기</a>
                                     </div>
                                     <div th:if="${reservation.useState == 1}">
                                         <label class="mr-10" th:text="${reservation.seller_Admin.name + ' 디자이너'}"></label>
-                                        <label class="text-primary mr-10" >취소</label>
+                                        <label class="text-danger mr-10" >취소</label>
                                     </div>
                                     <div>
-                                        <span class="small" th:text="${reservation.reservationDate}"></span>
+                                        <span class="small" th:text="${#calendars.format(reservation.reservationDate,'yyyy년 MM월 dd일 HH시 mm분')}"></span>
                                     </div>
                                 </div>
                             </td>
@@ -125,7 +125,7 @@
                     <!-- 처음으로 이동 -->
 
                     <li th:classappend="${pageNumber < pageSize} ? 'disabled'" class="page-item">
-                        <a class="page-link" th:href="@{/(page=0)}">
+                        <a class="page-link" onclick="javascript: page(0);">
                             <span>&laquo;</span>
                             <span class="sr-only">First</span>
                         </a>
@@ -197,7 +197,7 @@
                                                     <div>
                                                         <label class="mr-10" id="detail-name"></label>
                                                         <label class="text-primary mr-10" id="detail-status"></label>
-                                                        <a href="#" class="genric-btn info radius small" id="detail-btn"></a>
+                                                        <a onclick="event.cancelBubble=true" href="#" class="genric-btn info radius small" id="detail-btn"></a>
                                                     </div>
                                                     <div>
                                                         <span class="small" id="detail-reservationDate"></span>
@@ -294,28 +294,33 @@
                 success:function(data){
                     $('#detail-name').text(data.seller_Admin.name + " 디자이너");
 
-                    if(data.useState == 2)
+                    if(data.useState == 1)
                     {
-                        $('#detail-status').text("진행 전");
+                        $('#detail-status').text("취소");
+                        $('#detail-status').addClass("text-danger");
+                        $('#detail-status').removeClass("text-primary");
                         $('#detail-btn').addClass("d-none");
                     }
-                    else if(data.reservationState == 1)
-                    {
-                        $('#detail-status').text("진행 전");
-                        $('#detail-btn').text("예약 취소");
+                    else {
+                        $('#detail-status').addClass("text-primary");
+                        $('#detail-status').removeClass("text-danger");
                         $('#detail-btn').removeClass("d-none");
-                    }
-                    else if(data.reservationState == 2)
-                    {
-                        $('#detail-status').text("진행 중");
-                        $('#detail-btn').text("예약 완료 처리");
-                        $('#detail-btn').removeClass("d-none");
-                    }
-                    else if(data.reservationState == 3)
-                    {
-                        $('#detail-status').text("완료");
-                        $('#detail-btn').text("리뷰 쓰기");
-                        $('#detail-btn').removeClass("d-none");
+
+                        if(data.reservationState == 1)
+                        {
+                            $('#detail-status').text("진행 전");
+                            $('#detail-btn').text("예약 취소");
+                        }
+                        else if(data.reservationState == 2)
+                        {
+                            $('#detail-status').text("진행 중");
+                            $('#detail-btn').text("예약 완료 처리");
+                        }
+                        else if(data.reservationState == 3)
+                        {
+                            $('#detail-status').text("완료");
+                            $('#detail-btn').text("리뷰 쓰기");
+                        }
                     }
 
                     $('#detail-product-amount').text(comma(data.product.amount));
@@ -330,8 +335,32 @@
                     MsgBox.Alert("오류 발생");
                 }
             });
+        }
 
-
+        // 예약 취소
+        function reservationCancel(reservationId)
+        {
+            MsgBox.Confirm("취소하시겠습니까?", function () {
+                $.ajax({
+                    url: "/reservationCancel",
+                    type: "POST",
+                    data: {reservationId: reservationId},
+                    beforeSend : function(xhr)
+                    {
+                        /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+                        xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+                    },
+                    success:function(data){
+                        MsgBox.Alert(data.message, function () {
+                            $('#modal_reservation_detail').hide();
+                            $('#form').submit();
+                        });
+                    },
+                    error:function(data){
+                        MsgBox.Alert("오류 발생");
+                    }
+                });
+            });
         }
     </script>
 

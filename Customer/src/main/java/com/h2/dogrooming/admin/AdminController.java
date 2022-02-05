@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.validation.Valid;
+import java.util.Date;
 
 @Slf4j
 @Controller
@@ -80,6 +81,7 @@ public class AdminController {
         currentAdmin.setName(admin.getName());
         currentAdmin.setEmail(admin.getEmail());
         currentAdmin.setPhone(admin.getPhone());
+        currentAdmin.setUpdateDate(new Date());
 
         adminService.modifyAdmin(currentAdmin);
         return "redirect:/";

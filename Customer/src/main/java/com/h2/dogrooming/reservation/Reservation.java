@@ -33,6 +33,9 @@ public class Reservation {
     @JsonFormat(pattern = "yyyy년 MM월 dd일 HH시 mm분")
     private Date reservationDate;
 
+    @Column(length = 8, nullable = false)
+    private String reservationYmd;
+
     @Column(length = 10)
     private String postcode;
 
@@ -43,7 +46,7 @@ public class Reservation {
     private String addressDtl;
 
     @Column(length = 8, nullable = false)
-    private String ymd;
+    private String ymd;;
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
@@ -68,11 +71,13 @@ public class Reservation {
     public Reservation(){}
 
     @Builder
-    public Reservation(Integer reservationId, Integer reservationState, Integer useState, Date reservationDate, String postcode, String address, String addressDtl, String ymd, Date registerDate, Date updateDate, Admin seller_Admin, Admin buyer_Admin, Product product) {
+
+    public Reservation(Integer reservationId, Integer reservationState, Integer useState, Date reservationDate, String reservationYmd, String postcode, String address, String addressDtl, String ymd, Date registerDate, Date updateDate, Admin seller_Admin, Admin buyer_Admin, Product product) {
         this.reservationId = reservationId;
         this.reservationState = reservationState;
         this.useState = useState;
         this.reservationDate = reservationDate;
+        this.reservationYmd = reservationYmd;
         this.postcode = postcode;
         this.address = address;
         this.addressDtl = addressDtl;

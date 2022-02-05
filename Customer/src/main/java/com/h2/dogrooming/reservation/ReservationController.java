@@ -1,6 +1,5 @@
 package com.h2.dogrooming.reservation;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.h2.dogrooming.admin.Admin;
 import com.h2.dogrooming.admin.AdminService;
@@ -10,7 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -39,7 +38,7 @@ public class ReservationController {
                                     ,Model model
                                     ,@RequestParam(name = "dateFrom", required = false) String dateFrom
                                     ,@RequestParam(name = "dateTo", required = false) String dateTo
-                                    ,@PageableDefault(page = 0, size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) throws ParseException {
+                                    ,@PageableDefault(page = 0, size = 5, sort = "reservationDate", direction = Sort.Direction.DESC) Pageable pageable) throws ParseException {
         // 로그인 여부 확인
         if(authentication == null)
         {
@@ -52,9 +51,9 @@ public class ReservationController {
 
         if(dateFrom == null || dateFrom == "") {
             // 일년전 날짜 구하기
-            Calendar mon = Calendar.getInstance();
-            mon.add(Calendar.YEAR , -1);
-            dateFrom = new java.text.SimpleDateFormat("yyyy-MM-dd").format(mon.getTime());
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.YEAR , -1);
+            dateFrom = new java.text.SimpleDateFormat("yyyy-MM-dd").format(calendar.getTime());
         }
 
         if(dateTo == null || dateTo == "") {
@@ -64,13 +63,11 @@ public class ReservationController {
             dateTo = date.format(today);
         }
 
-        SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
-
         // 로그인된 사용자의 예약 정보 조회
-        Page<Reservation> reservationList = reservationService.getReservationList(currentAdmin.getAdminId(), transFormat.parse(dateFrom), transFormat.parse(dateTo), pageable);
+        Page<Reservation> reservationList = reservationService.getReservationList(currentAdmin.getAdminId(), dateFrom.replaceAll("-", ""), dateTo.replaceAll("-", ""), pageable);
 
         // 로그인된 사용자의 예약 정보 금액 조회
-        Integer sumAmount = reservationService.getReservationSummary(currentAdmin.getAdminId(), transFormat.parse(dateFrom), transFormat.parse(dateTo));
+        Integer sumAmount = reservationService.getReservationSummary(currentAdmin.getAdminId(), dateFrom.replaceAll("-", ""), dateTo.replaceAll("-", ""));
         DecimalFormat decimalFormat = new DecimalFormat("###,###");
 
         //add data to view
@@ -89,5 +86,23 @@ public class ReservationController {
     public Reservation getReservationDetail(@RequestParam("reservationId") Integer reservationId){
         Reservation reservation = reservationService.getReservationDetail(reservationId);
         return reservation;
+    }
+
+    // 취소 처리
+    @PostMapping("/reservationCancel")
+    @ResponseBody
+    public Map<String, Object> cancelReservation(@RequestParam("reservationId") Integer reservationId) throws Exception{
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        try {
+            reservationService.cancelReservation(reservationId);
+            map.put("code", 0);
+            map.put("message", "예약을 취소했습니다.");
+        }
+        catch (Exception e){
+            map.put("code", 0);
+            map.put("message", e.getMessage());
+        }
+        return map;
     }
 }

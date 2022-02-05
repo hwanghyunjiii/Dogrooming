@@ -16,17 +16,26 @@ public class ReservationService {
     ReservationRepository reservationRepository;
 
     // 예약 리스트 조회
-    public Page<Reservation> getReservationList(String buyerId, Date dateFrom, Date dateTo, Pageable pageable) {
+    public Page<Reservation> getReservationList(String buyerId, String dateFrom, String dateTo, Pageable pageable) {
         return reservationRepository.findAllByBuyerId(buyerId, dateFrom, dateTo, pageable);
     }
 
     // 에약 금액 조회
-    public Integer getReservationSummary(String buyerId, Date dateFrom, Date dateTo) {
+    public Integer getReservationSummary(String buyerId, String dateFrom, String dateTo) {
         return reservationRepository.findAllByBuyerIdSummary(buyerId, dateFrom, dateTo);
     }
 
     // 예약 상세 조회
     public Reservation getReservationDetail(Integer reservationId){
         return reservationRepository.findReservationByReservationId(reservationId);
+    }
+
+    // 예약 취소
+    public Reservation cancelReservation(Integer reservationId){
+        Reservation reservation = reservationRepository.findReservationByReservationId(reservationId);
+        reservation.setUseState(1);
+        reservation.setUpdateDate(new Date());
+
+        return reservationRepository.save(reservation);
     }
 }
