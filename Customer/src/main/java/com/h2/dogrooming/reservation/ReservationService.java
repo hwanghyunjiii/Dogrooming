@@ -30,10 +30,10 @@ public class ReservationService {
         return reservationRepository.findReservationByReservationId(reservationId);
     }
 
-    // 예약 취소
-    public Reservation cancelReservation(Integer reservationId){
-        Reservation reservation = reservationRepository.findReservationByReservationId(reservationId);
-        reservation.setUseState(1);
+    // 예약 상태 변경
+    public Reservation modifyReservation(Reservation reservation, Integer useState, Integer reservationState){
+        reservation.setUseState(useState);   // 예약 상태 (0: 정상, 1: 취소)
+        reservation.setReservationState(reservationState);  // 예약 진행 상태 변경 (1: 진행 전, 2: 진행 중, 3: 진행 완료)
         reservation.setUpdateDate(new Date());
 
         return reservationRepository.save(reservation);

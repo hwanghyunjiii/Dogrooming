@@ -2,12 +2,15 @@ package com.h2.dogrooming.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.h2.dogrooming.admin.Admin;
+import com.h2.dogrooming.designer.Designer;
+import com.h2.dogrooming.reservation.Reservation;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -58,5 +61,4 @@ public class Product {
         this.registerDate = registerDate;
         this.updateDate = updateDate;
     }
-
 }

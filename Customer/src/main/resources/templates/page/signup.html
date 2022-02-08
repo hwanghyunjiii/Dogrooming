@@ -80,7 +80,7 @@
             rules: {
                 adminId: {
                     required : true,
-                    minlength : 6,
+                    minlength : 4,
                     adminId_rule : true
                 },
                 password: {
@@ -148,7 +148,7 @@
         function CheckAdminId(){
             var adminId = $('#adminId').val();
 
-            if(adminId.length >= 6 && /^[a-zA-Z0-9]*$/.test(adminId)) {
+            if(adminId.length >= 4 && /^[a-zA-Z0-9]*$/.test(adminId)) {
                 // 아이디 중복 체크
                 $.ajax({
                     url:'/check_adminId',

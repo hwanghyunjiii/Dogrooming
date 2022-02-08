@@ -1,15 +1,15 @@
 package com.h2.dogrooming.reservation;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.h2.dogrooming.admin.Admin;
 import com.h2.dogrooming.admin.AdminService;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -30,8 +30,6 @@ public class ReservationController {
 
     @Autowired
     AdminService adminService;
-
-    ObjectMapper mapper;
 
     @RequestMapping(value = "/reservation")
     public String goReservationList( Authentication authentication
@@ -83,19 +81,34 @@ public class ReservationController {
     // 예약 상세내역 조회
     @PostMapping("/reservationDetail")
     @ResponseBody
-    public Reservation getReservationDetail(@RequestParam("reservationId") Integer reservationId){
+    public ReservationDto getReservationDetail(@RequestParam("reservationId") Integer reservationId){
         Reservation reservation = reservationService.getReservationDetail(reservationId);
-        return reservation;
+        ReservationDto reservationDto = new ReservationDto(reservation);
+
+        return reservationDto;
     }
 
     // 취소 처리
     @PostMapping("/reservationCancel")
     @ResponseBody
-    public Map<String, Object> cancelReservation(@RequestParam("reservationId") Integer reservationId) throws Exception{
+    public Map<String, Object> cancelReservation(@RequestParam("reservationId") Integer reservationId){
         Map<String, Object> map = new HashMap<String, Object>();
 
         try {
-            reservationService.cancelReservation(reservationId);
+            // 예약 정보 조회
+            Reservation reservation = reservationService.getReservationDetail(reservationId);
+
+            // 진행 중이 아니거나, 취소 상태인 경우
+            if(reservation.getReservationState() != 1 || reservation.getUseState() == 2)
+            {
+                map.put("code", 0);
+                map.put("message", "취소 처리를 할 수 없습니다. 상태를 확인해주세요.");
+                return map;
+            }
+
+            // 취소 상태로 업데이트
+            reservationService.modifyReservation(reservation, 1, reservation.getReservationState());
+
             map.put("code", 0);
             map.put("message", "예약을 취소했습니다.");
         }
@@ -104,5 +117,65 @@ public class ReservationController {
             map.put("message", e.getMessage());
         }
         return map;
+    }
+
+    // 예약 완료 처리
+    @PostMapping("/reservationComplete")
+    @ResponseBody
+    public Map<String, Object> reservationComplete(@RequestParam("reservationId") Integer reservationId){
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        try {
+            // 예약 정보 조회
+            Reservation reservation = reservationService.getReservationDetail(reservationId);
+
+            // 진행 중이 아니거나, 취소 상태인 경우
+            if(reservation.getReservationState() != 2 || reservation.getUseState() == 1)
+            {
+                map.put("code", 0);
+                map.put("message", "예약 완료 처리를 할 수 없습니다. 상태를 확인해주세요.");
+                return map;
+            }
+
+            // 진행 상황 업데이트
+            reservationService.modifyReservation(reservation, reservation.getUseState(),3);
+
+            map.put("code", 0);
+            map.put("message", "완료 처리하였습니다.");
+        }
+        catch (Exception e){
+            map.put("code", 0);
+            map.put("message", e.getMessage());
+        }
+
+        return map;
+    }
+
+
+    @Data
+    static class ReservationDto {
+        private String designerName;
+        private Integer useState;
+        private Integer reservationState;
+        private Double amount;
+
+        @JsonFormat(pattern = "yyyy년 MM월 dd일 HH시 mm분")
+        private Date reservationDate;
+        private String productName;
+        private String postcode;
+        private String address;
+        private String addressDtl;
+
+        public ReservationDto (Reservation reservation){
+            designerName = reservation.getSeller_Admin().getDesigner().getName();
+            useState = reservation.getUseState();
+            reservationState = reservation.getReservationState();
+            amount = reservation.getProduct().getAmount();
+            reservationDate = reservation.getReservationDate();
+            productName = reservation.getProduct().getName();
+            postcode = reservation.getPostcode();
+            address = reservation.getAddress();
+            addressDtl = reservation.getAddressDtl();
+        }
     }
 }

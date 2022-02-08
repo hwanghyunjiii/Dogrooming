@@ -1,7 +1,10 @@
 package com.h2.dogrooming.admin;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.h2.dogrooming.designer.Designer;
 import com.h2.dogrooming.designer.DesignerAddress;
+import com.h2.dogrooming.reservation.Reservation;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +14,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,7 +22,8 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-public class Admin{
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
+public class Admin implements Serializable {
 
     @Id
     @GeneratedValue
@@ -60,7 +65,7 @@ public class Admin{
     private Date updateDate; //수정날짜
 
     @Builder
-    public Admin(Integer adminNo, String adminId, String password, Integer type, String name, String email, String phone, Integer useState, Date registerDate, Date updateDate) {
+    public Admin(Integer adminNo, String adminId, String password, Integer type, String name, String email, String phone, Integer useState, Date registerDate, Date updateDate, Designer designer) {
         this.adminNo = adminNo;
         this.adminId = adminId;
         this.password = password;
@@ -71,9 +76,19 @@ public class Admin{
         this.useState = useState;
         this.registerDate = registerDate;
         this.updateDate = updateDate;
+        this.designer = designer;
     }
 
     public Admin() {
 
     }
+
+    @OneToOne (mappedBy = "admin", fetch = FetchType.LAZY)
+    private Designer designer;
+
+    @OneToMany(mappedBy = "buyer_Admin")
+    private List<Reservation> buyer_reservationList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "seller_Admin")
+    private List<Reservation> seller_reservationList = new ArrayList<>();
 }

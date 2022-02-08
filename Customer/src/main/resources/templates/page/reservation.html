@@ -30,8 +30,13 @@
         </div>
     </section>
 
+    <form id="review_form" th:action="@{/review}" th:method="post">
+        <input id="review_reservationId" name="review_reservationId" class="d-none">
+    </form>
+
     <form id="form" th:action th:method="post">
         <input id="page" name="page" class="d-none" th:value="${reservationList.pageable.pageNumber}">
+
         <!-- 예약 횟수, 금액 End -->
         <section class="mt-40 mb-40">
             <div class="container box_1170">
@@ -75,12 +80,12 @@
                                     <div th:if="${reservation.reservationState == 2 and reservation.useState == 0}">
                                         <label class="mr-10" th:text="${reservation.seller_Admin.name + ' 디자이너'}"></label>
                                         <label class="text-primary mr-10" >진행 중</label>
-                                        <a onclick="event.cancelBubble=true" href="#" class="genric-btn info radius small">예약 완료 처리</a>
+                                        <a onclick="event.cancelBubble=true" th:href="|javascript: reservationComplete(${reservation.reservationId})|" class="genric-btn info radius small">예약 완료 처리</a>
                                     </div>
                                     <div th:if="${reservation.reservationState == 3 and reservation.useState == 0}">
                                         <label class="mr-10" th:text="${reservation.seller_Admin.name + ' 디자이너'}"></label>
                                         <label class="text-primary mr-10" >완료</label>
-                                        <a onclick="event.cancelBubble=true" href="#" class="genric-btn info radius small">리뷰 쓰기</a>
+                                        <a onclick="event.cancelBubble=true" th:href="|javascript: goRegisterReview(${reservation.reservationId})|" class="genric-btn info radius small">리뷰 쓰기</a>
                                     </div>
                                     <div th:if="${reservation.useState == 1}">
                                         <label class="mr-10" th:text="${reservation.seller_Admin.name + ' 디자이너'}"></label>
@@ -197,7 +202,6 @@
                                                     <div>
                                                         <label class="mr-10" id="detail-name"></label>
                                                         <label class="text-primary mr-10" id="detail-status"></label>
-                                                        <a onclick="event.cancelBubble=true" href="#" class="genric-btn info radius small" id="detail-btn"></a>
                                                     </div>
                                                     <div>
                                                         <span class="small" id="detail-reservationDate"></span>
@@ -280,6 +284,7 @@
             $('#form').submit();
         }
 
+        // 예약 상세 정보
         function reservationDetail(reservationId)
         {
             $.ajax({
@@ -292,40 +297,35 @@
                     xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
                 },
                 success:function(data){
-                    $('#detail-name').text(data.seller_Admin.name + " 디자이너");
+                    $('#detail-name').text(data.designerName + " 디자이너");
 
                     if(data.useState == 1)
                     {
                         $('#detail-status').text("취소");
                         $('#detail-status').addClass("text-danger");
                         $('#detail-status').removeClass("text-primary");
-                        $('#detail-btn').addClass("d-none");
                     }
                     else {
                         $('#detail-status').addClass("text-primary");
                         $('#detail-status').removeClass("text-danger");
-                        $('#detail-btn').removeClass("d-none");
 
                         if(data.reservationState == 1)
                         {
                             $('#detail-status').text("진행 전");
-                            $('#detail-btn').text("예약 취소");
                         }
                         else if(data.reservationState == 2)
                         {
                             $('#detail-status').text("진행 중");
-                            $('#detail-btn').text("예약 완료 처리");
                         }
                         else if(data.reservationState == 3)
                         {
                             $('#detail-status').text("완료");
-                            $('#detail-btn').text("리뷰 쓰기");
                         }
                     }
 
-                    $('#detail-product-amount').text(comma(data.product.amount));
+                    $('#detail-product-amount').text(comma(data.amount));
                     $('#detail-reservationDate').text(data.reservationDate);
-                    $('#detail-product-name').text(data.product.name);
+                    $('#detail-product-name').text(data.productName);
                     $('#detail-postcode').text(data.postcode);
                     $('#detail-address').text(data.address);
                     $('#detail-addressDtl').text(data.addressDtl);
@@ -362,6 +362,42 @@
                 });
             });
         }
+
+        // 예약 완료 처리
+        function reservationComplete(reservationId)
+        {
+            MsgBox.Confirm("완료 처리하시겠습니까?", function () {
+                $.ajax({
+                    url: "/reservationComplete",
+                    type: "POST",
+                    data: {reservationId: reservationId},
+                    beforeSend : function(xhr)
+                    {
+                        /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+                        xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+                    },
+                    success:function(data){
+                        MsgBox.Alert(data.message, function () {
+                            $('#modal_reservation_detail').hide();
+                            $('#form').submit();
+                        });
+                    },
+                    error:function(data){
+                        MsgBox.Alert("오류 발생");
+                    }
+                });
+            });
+        }
+
+        // 리뷰 등록 페이지로 이동
+        function goRegisterReview(reservationId)
+        {
+            MsgBox.Confirm("리뷰를 작성하시겠습니까?", function () {
+              $('#review_reservationId').val(reservationId);
+              $('#review_form').submit();
+            });
+        }
+
     </script>
 
 </th:block>

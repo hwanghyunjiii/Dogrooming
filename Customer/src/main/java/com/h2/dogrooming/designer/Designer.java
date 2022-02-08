@@ -1,5 +1,6 @@
 package com.h2.dogrooming.designer;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.h2.dogrooming.admin.Admin;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +19,7 @@ public class Designer{
     @GeneratedValue
     private Integer designerId;
 
-    @OneToOne
+    @OneToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "adminNo")
     private Admin admin; // 아이디
 

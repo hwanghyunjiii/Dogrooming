@@ -1,23 +1,24 @@
 package com.h2.dogrooming.reservation;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.h2.dogrooming.admin.Admin;
-import com.h2.dogrooming.designer.Designer;
 import com.h2.dogrooming.product.Product;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Getter
 @Setter
-public class Reservation {
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
+public class Reservation implements Serializable {
 
     @Id
     @GeneratedValue
@@ -61,7 +62,6 @@ public class Reservation {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "buyerNo")
-    @JsonIgnore
     private Admin buyer_Admin;
 
     @ManyToOne
@@ -71,7 +71,6 @@ public class Reservation {
     public Reservation(){}
 
     @Builder
-
     public Reservation(Integer reservationId, Integer reservationState, Integer useState, Date reservationDate, String reservationYmd, String postcode, String address, String addressDtl, String ymd, Date registerDate, Date updateDate, Admin seller_Admin, Admin buyer_Admin, Product product) {
         this.reservationId = reservationId;
         this.reservationState = reservationState;
@@ -87,5 +86,14 @@ public class Reservation {
         this.seller_Admin = seller_Admin;
         this.buyer_Admin = buyer_Admin;
         this.product = product;
+    }
+
+    // 예약 상태 변경
+    public Reservation modifyReservationState(Integer reservationState, Integer useState, Date reservationDate){
+        this.reservationState = reservationState;
+        this.useState = useState;
+        this.reservationDate = reservationDate;
+
+       return this;
     }
 }
