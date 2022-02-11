@@ -1,5 +1,6 @@
 package com.h2.dogrooming.review;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;

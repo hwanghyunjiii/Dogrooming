@@ -101,7 +101,7 @@ public class ReservationController {
             // 진행 중이 아니거나, 취소 상태인 경우
             if(reservation.getReservationState() != 1 || reservation.getUseState() == 2)
             {
-                map.put("code", 0);
+                map.put("code", 998);
                 map.put("message", "취소 처리를 할 수 없습니다. 상태를 확인해주세요.");
                 return map;
             }
@@ -113,7 +113,7 @@ public class ReservationController {
             map.put("message", "예약을 취소했습니다.");
         }
         catch (Exception e){
-            map.put("code", 0);
+            map.put("code", 999);
             map.put("message", e.getMessage());
         }
         return map;
@@ -132,7 +132,7 @@ public class ReservationController {
             // 진행 중이 아니거나, 취소 상태인 경우
             if(reservation.getReservationState() != 2 || reservation.getUseState() == 1)
             {
-                map.put("code", 0);
+                map.put("code", 998);
                 map.put("message", "예약 완료 처리를 할 수 없습니다. 상태를 확인해주세요.");
                 return map;
             }
@@ -144,38 +144,10 @@ public class ReservationController {
             map.put("message", "완료 처리하였습니다.");
         }
         catch (Exception e){
-            map.put("code", 0);
+            map.put("code", 999);
             map.put("message", e.getMessage());
         }
 
         return map;
-    }
-
-
-    @Data
-    static class ReservationDto {
-        private String designerName;
-        private Integer useState;
-        private Integer reservationState;
-        private Double amount;
-
-        @JsonFormat(pattern = "yyyy년 MM월 dd일 HH시 mm분")
-        private Date reservationDate;
-        private String productName;
-        private String postcode;
-        private String address;
-        private String addressDtl;
-
-        public ReservationDto (Reservation reservation){
-            designerName = reservation.getSeller_Admin().getDesigner().getName();
-            useState = reservation.getUseState();
-            reservationState = reservation.getReservationState();
-            amount = reservation.getProduct().getAmount();
-            reservationDate = reservation.getReservationDate();
-            productName = reservation.getProduct().getName();
-            postcode = reservation.getPostcode();
-            address = reservation.getAddress();
-            addressDtl = reservation.getAddressDtl();
-        }
     }
 }

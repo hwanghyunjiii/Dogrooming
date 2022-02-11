@@ -19,7 +19,7 @@
             <div class="billing_details">
                 <div class="row justify-content-center">
                     <div class="col-lg-8">
-                        <form id="form" class="row contact_form" th:action="@{/mypage}" method="post" novalidate="novalidate">
+                        <form id="form" class="row contact_form" method="post" novalidate="novalidate">
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                             <div class="col-md-12 form-group p_star">
                                 <span class="text-black-50 small ml-2">아이디</span>
@@ -48,7 +48,7 @@
                                 <input type="text" class="form-control" id="authno" name="authno" placeholder=""/>
                             </div>
                             <div class="col-md-12 form-group">
-                                <button type="submit" class="btn_3 w-100">
+                                <button type="button" class="btn_3 w-100" onclick="javascript:modifyAdmin();">
                                     회원 정보 수정
                                 </button>
                             </div>
@@ -64,9 +64,7 @@
         $(function (){
             $("form").validate({
                 submitHandler: function(form) {
-                    MsgBox.Confirm("회원 정보를 수정하시겠습니까?", function () {
-                        form.submit();
-                    });
+
                 },
                 // 체크할 항목들의 룰 설정
                 rules: {
@@ -102,6 +100,36 @@
                 }
             });
         })
+
+        // 회원 정보 수정
+        function modifyAdmin(){
+
+            MsgBox.Confirm("회원 정보를 수정하시겠습니까?", function () {
+                $.ajax({
+                    url:'/modifyAdmin',
+                    type:'post', //POST 방식으로 전달
+                    data: {
+                        adminId : $('#adminId').val(),
+                        name: $('#name').val(),
+                        email: $('#email').val(),
+                        phone : $('#phone').val()
+                    },
+                    beforeSend : function(xhr)
+                    {
+                        /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+                        xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+                    },
+                    success:function(data){
+                        MsgBox.Alert(data.message, function () {
+                            location.href = "/login";
+                        });
+                    },
+                    error:function(data){
+                        MsgBox.Alert(data);
+                    }
+                });
+            });
+        };
     </script>
 </th:block>
 

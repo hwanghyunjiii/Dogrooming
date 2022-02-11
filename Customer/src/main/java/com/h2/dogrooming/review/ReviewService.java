@@ -10,4 +10,9 @@ public class ReviewService {
 
     @Autowired
     ReviewRepository reviewRepository;
+
+    // 리뷰 등록
+    public void registerReview(Review review) {
+        reviewRepository.save(review);
+    }
 }

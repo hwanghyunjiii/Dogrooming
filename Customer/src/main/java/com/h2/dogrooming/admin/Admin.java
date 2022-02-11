@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.relational.core.sql.In;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -81,6 +82,30 @@ public class Admin implements Serializable {
 
     public Admin() {
 
+    }
+
+    // 회원가입 비번, 상태, 타입 설정
+    public void signup(String password, Integer useState, Integer type){
+        this.password = password;
+        this.useState = useState;
+        this.type = type;
+    }
+
+    // 개인 정보 수정
+    public void mypage(String name, String email, String phone, Date updateDate){
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.updateDate = updateDate;
+    }
+
+    // DTO
+    public Admin(AdminDTO adminDTO){
+        adminId = adminDTO.getAdminId();
+        password = adminDTO.getPassword();
+        name = adminDTO.getName();
+        email = adminDTO.getEmail();
+        phone = adminDTO.getPhone();
     }
 
     @OneToOne (mappedBy = "admin", fetch = FetchType.LAZY)

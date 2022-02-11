@@ -22,13 +22,6 @@ public class AdminService implements UserDetailsService {
     }
 
     public void registerAdmin(Admin admin) {
-        // 비밀번호 암호화
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        admin.setPassword(passwordEncoder.encode(admin.getPassword()));
-
-        admin.setType(1);
-        admin.setUseState(0);
-
         adminRepository.save(admin);
     }
 
@@ -57,8 +50,8 @@ public class AdminService implements UserDetailsService {
     }
 
     // 아이디 찾기
-    public String findAdminId(String name, String email){
-        Admin admin = adminRepository.findAdminByNameAndEmail(name, email);
+    public String findAdminId(AdminDTO adminDTO){
+        Admin admin = adminRepository.findAdminByNameAndEmail(adminDTO.getName(), adminDTO.getEmail());
         String adminId = "";
         if(admin != null){
             adminId = admin.getAdminId();

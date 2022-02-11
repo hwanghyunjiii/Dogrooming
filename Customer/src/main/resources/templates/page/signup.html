@@ -19,10 +19,10 @@
             <div class="billing_details">
                 <div class="row justify-content-center">
                     <div class="col-lg-8">
-                        <form id="form" class="row contact_form" th:action="@{/signup}" method="post" novalidate="novalidate">
+                        <form id="form" class="row contact_form" method="post" novalidate="novalidate">
                             <input type="hidden" name="adminId_chkflag" id="adminId_chkflag" th:value="N">
                             <div class="col-md-12 form-group p_star">
-                                <input type="text" class="form-control" id="adminId" name="adminId" placeholder="ID" maxlength="20" oninput="CheckAdminId()"/>
+                                <input type="text" class="form-control" id="adminId" name="adminId" placeholder="ID" maxlength="20" oninput="checkAdminId()"/>
                                 <span id="id_ok" class="text-primary small ml-2 d-none">사용 가능한 아이디입니다.</span>
                                 <span id="id_already" class="text-danger small ml-2 d-none">누군가 이 아이디를 사용하고 있어요.</span>
                             </div>
@@ -73,7 +73,7 @@
                 }
 
                 MsgBox.Confirm("회원가입을 하시겠습니까?", function () {
-                    form.submit();
+                    signup();
                 });
             },
             // 체크할 항목들의 룰 설정
@@ -145,7 +145,8 @@
             });
         })
 
-        function CheckAdminId(){
+        // 아이디 체크
+        function checkAdminId(){
             var adminId = $('#adminId').val();
 
             if(adminId.length >= 4 && /^[a-zA-Z0-9]*$/.test(adminId)) {
@@ -153,7 +154,9 @@
                 $.ajax({
                     url:'/check_adminId',
                     type:'post', //POST 방식으로 전달
-                    data:{adminId:adminId},
+                    data:{
+                        adminId : adminId
+                    },
                     beforeSend : function(xhr)
                     {
                         /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
@@ -173,8 +176,8 @@
                             $('#adminId_chkflag').val("N")
                         }
                     },
-                    error:function(){
-                        alert("에러 발생");
+                    error:function(data){
+                        MsgBox.Alert(data);
                     }
                 });
             }
@@ -185,6 +188,35 @@
                 $('#adminId_chkflag').val("N")
             }
         };
+
+        // 회원 가입
+        function signup(){
+            $.ajax({
+                url:'/signup',
+                type:'post', //POST 방식으로 전달
+                data: {
+                    adminId : $('#adminId').val(),
+                    password : $('#password').val(),
+                    name: $('#name').val(),
+                    email: $('#email').val(),
+                    phone: $('#phone').val()
+                },
+                beforeSend : function(xhr)
+                {
+                    /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+                    xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+                },
+                success:function(data){
+                    MsgBox.Alert(data.message, function () {
+                        location.href = "/login";
+                    });
+                },
+                error:function(data){
+                    MsgBox.Alert(data);
+                }
+            });
+        };
+
 
     </script>
 </th:block>

@@ -32,10 +32,7 @@ public class ReservationService {
 
     // 예약 상태 변경
     public Reservation modifyReservation(Reservation reservation, Integer useState, Integer reservationState){
-        reservation.setUseState(useState);   // 예약 상태 (0: 정상, 1: 취소)
-        reservation.setReservationState(reservationState);  // 예약 진행 상태 변경 (1: 진행 전, 2: 진행 중, 3: 진행 완료)
-        reservation.setUpdateDate(new Date());
-
+        reservation.modifyReservationState(reservationState, useState, new Date());
         return reservationRepository.save(reservation);
     }
 }

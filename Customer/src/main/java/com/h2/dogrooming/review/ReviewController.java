@@ -1,5 +1,6 @@
 package com.h2.dogrooming.review;
 
+import com.h2.dogrooming.common.FileDto;
 import com.h2.dogrooming.admin.Admin;
 import com.h2.dogrooming.admin.AdminService;
 import com.h2.dogrooming.reservation.Reservation;
@@ -10,8 +11,16 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.Valid;
+import java.io.File;
+import java.util.Arrays;
+import java.util.UUID;
 
 @Slf4j
 @Controller
@@ -59,10 +68,38 @@ public class ReviewController {
 
         //add data to view
         model.addAttribute("reservation", reservation);
-
         return "page/review";
     }
 
 
-    public
+    @PostMapping("/registerReview")
+    public String registerReview(@RequestParam("file") MultipartFile file,
+                                 @Valid @ModelAttribute Review review) {
+
+        // 파일 업로드
+        FileDto dto = new FileDto(UUID.randomUUID().toString(),
+                                  file.getOriginalFilename(), file.getContentType() );
+        File newFileName = new File(dto.getFileName());
+
+        // 확장자 유효성 체크
+        String[] EXTENSION = { "jpg", "png", "jpeg", "gif"};
+        if(!Arrays.asList(EXTENSION).contains(file.getContentType())){
+            // 오류 발생
+            return "redirect:/";
+        }
+
+        try {
+            file.transferTo(newFileName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // 파일 이름 저장
+        review.setFile(dto.getFileName());
+        review.setUseState(0);
+
+        // 리뷰 등록
+        reviewService.registerReview(review);
+        return "redirect:/";
+    }
 }

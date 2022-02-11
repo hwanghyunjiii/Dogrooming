@@ -15,69 +15,71 @@
     <!-- slider Area End-->
 
     <!-- 리뷰 등록 Start -->
-    <section class="cart_area section-padding">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-10">
-                   <div class="cart_inner">
-                        <label class="ml-10">예약 정보</label>
-                        <div class="table-responsive">
-                    <table class="table">
-                        <tbody>
-                        <tr>
-                            <td>
-                                <div class="media">
-                                    <div>
-                                        <i class="fa fa-heart"></i>
+    <form method="post" action="/registerReview" enctype="multipart/form-data">
+        <input class="d-none" id="reservationId" name="reservationId" th:value="${reservation.reservationId}">
+        <section class="cart_area section-padding">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-10">
+                       <div class="cart_inner">
+                            <label class="ml-10">예약 정보</label>
+                            <div class="table-responsive">
+                            <table class="table">
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <div class="media">
+                                        <div>
+                                            <i class="fa fa-heart"></i>
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="media-body">
+                                </td>
+                                <td>
+                                    <div class="media-body">
+                                        <div>
+                                            <label class="mr-10" th:text="${reservation.seller_Admin.name} + ' 디자이너'"></label>
+                                            <!-- 예약 상태 Start -->
+                                            <label class="text-primary mr-10" th:if="${reservation.reservationState == 1 and reservation.useState == 0}">진행 전</label>
+                                            <label class="text-primary mr-10" th:if="${reservation.reservationState == 2 and reservation.useState == 0}">진행 중</label>
+                                            <label class="text-primary mr-10" th:if="${reservation.reservationState == 3 and reservation.useState == 0}">완료</label>
+                                            <label class="text-danger mr-10" th:if="${reservation.useState == 1}">취소</label>
+                                            <!-- 예약 상태 End -->
+                                        </div>
+                                        <div>
+                                            <span class="small" th:text="${#calendars.format(reservation.reservationDate,'yyyy년 MM월 dd일 HH시 mm분')}"></span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="col-4">
                                     <div>
-                                        <label class="mr-10" th:text="${reservation.seller_Admin.name} + ' 디자이너'"></label>
-                                        <!-- 예약 상태 Start -->
-                                        <label class="text-primary mr-10" th:if="${reservation.reservationState == 1 and reservation.useState == 0}">진행 전</label>
-                                        <label class="text-primary mr-10" th:if="${reservation.reservationState == 2 and reservation.useState == 0}">진행 중</label>
-                                        <label class="text-primary mr-10" th:if="${reservation.reservationState == 3 and reservation.useState == 0}">완료</label>
-                                        <label class="text-danger mr-10" th:if="${reservation.useState == 1}">취소</label>
-                                        <!-- 예약 상태 End -->
+                                        <label class="small" th:text="${reservation.product.name}"></label>
                                     </div>
                                     <div>
-                                        <span class="small" th:text="${#calendars.format(reservation.reservationDate,'yyyy년 MM월 dd일 HH시 mm분')}"></span>
+                                        <label class="mr-2">결제</label><label th:text="${#numbers.formatInteger(reservation.product.amount, 0, 'COMMA')}"></label><label>원</label>
                                     </div>
-                                </div>
-                            </td>
-                            <td class="col-4">
-                                <div>
-                                    <label class="small" th:text="${reservation.product.name}"></label>
-                                </div>
-                                <div>
-                                    <label class="mr-2">결제</label><label th:text="${#numbers.formatInteger(reservation.product.amount, 0, 'COMMA')}"></label><label>원</label>
-                                </div>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                    </div>
-                    <div class="cart_inner mt-30">
-                        <label class="ml-10">리뷰 작성</label>
-                        <textarea class="form-control" name="message" th:id="Content" rows="5" placeholder="최소 10자 이상 입력해주세요."></textarea>
-                    </div>
-                    <div class="cart_inner mt-60">
-                        <label class="ml-10">사진 업로드</label>
-                        <a href="#" class="genric-btn info radius small ml-20">파일 선택</a>
-                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                        </div>
+                        <div class="cart_inner mt-30">
+                            <label class="ml-10">리뷰 작성</label>
+                            <textarea class="form-control" id="content" name="content" rows="5" placeholder="최소 10자 이상 입력해주세요."></textarea>
+                        </div>
+                        <div class="cart_inner mt-60">
+                            <label class="ml-10">사진 업로드</label>
+                            <input type="file" name="file">
+                        </div>
 
-                    <div class="mt-60">
-                        <a href="#" class="genric-btn info-border radius w-100 btn_3">리뷰 등록하기</a>
+                        <div class="mt-60">
+                            <a href="javascript: $('#form').submit()" class="genric-btn info-border radius w-100 btn_3">리뷰 등록하기</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-
+        </section>
+    </form>
     <!-- 리뷰 등록 End -->
 
 <!-- //content -->
