@@ -14,7 +14,7 @@ public class Product {
 
     @Id
     @GeneratedValue
-    private Integer productId;
+    private long productId;
 
     @Column(length = 40, nullable = false)
     private String adminId;

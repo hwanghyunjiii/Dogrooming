@@ -13,7 +13,7 @@ public class Reservation {
 
     @Id
     @GeneratedValue
-    private Integer reservationId;
+    private long reservationId;
 
     @Column(nullable = false)
     private Integer productId;
@@ -63,7 +63,7 @@ public class Reservation {
 
     public Reservation(){}
 
-    public Reservation(Integer reservationId, Integer productId, String buyerId, String sellerId, String name, String phone, Double amount, Integer reservationState, Integer useState, Date reservationDate, String postcode, String address, String addressDtl, String ymd, Date registerDate, Date updateDate){
+    public Reservation(long reservationId, Integer productId, String buyerId, String sellerId, String name, String phone, Double amount, Integer reservationState, Integer useState, Date reservationDate, String postcode, String address, String addressDtl, String ymd, Date registerDate, Date updateDate){
         this.reservationId = reservationId;
         this.productId = productId;
         this.buyerId = buyerId;

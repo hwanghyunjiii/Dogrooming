@@ -37,7 +37,7 @@
 
     <script type="text/javascript">
         // 아이디 유효성 검사 (숫자와 영문 가능)
-        $.validator.addMethod('adminID_rule', function (value, element) {
+        $.validator.addMethod('adminId_rule', function (value, element) {
             if (/^[a-zA-Z0-9]*$/.test(value)) {
                 return true;
             } else {
@@ -77,7 +77,7 @@
         });
 
         $.validator.addMethod('password_rule_3', function (value, element) {
-            if (value.indexOf($('#adminID').val()) >= 0) {
+            if (value.indexOf($('#adminId').val()) >= 0) {
                 return false;
             } else {
                 return true;

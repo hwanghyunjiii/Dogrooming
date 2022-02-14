@@ -72,7 +72,7 @@ public class AdminController {
         Admin currentAdmin = adminService.getAdmin(userDetails.getUsername());
 
         // 사용자와 전달받은 ID가 동일한지 확인
-        if(!currentAdmin.getAdminID().equals(admin.getAdminID()))
+        if(!currentAdmin.getAdminId().equals(admin.getAdminId()))
         {
             return "redirect:/login";
         }
@@ -102,7 +102,7 @@ public class AdminController {
     // 아이디 체크
     @PostMapping("/checkadminid")
     @ResponseBody
-    public boolean checkAdminID(@RequestParam("adminID") String AdminID){
+    public boolean checkAdminID(@RequestParam("adminId") String AdminID){
         boolean result = adminService.checkAdminID(AdminID);
         return result;
     }

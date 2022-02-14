@@ -17,8 +17,8 @@ public class AdminService implements UserDetailsService {
     @Autowired
     private AdminRepository adminRepository;
 
-    public Admin getAdmin(String adminID) {
-        return adminRepository.getAdminByAdminID(adminID);
+    public Admin getAdmin(String adminId) {
+        return adminRepository.getAdminByAdminId(adminId);
     }
 
     public void registerAdmin(Admin admin) {
@@ -33,13 +33,13 @@ public class AdminService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String adminID) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String adminId) throws UsernameNotFoundException {
 
-        Admin admin = adminRepository.findByAdminID(adminID)
-                .orElseThrow(() -> new UsernameNotFoundException("Could not found user" + adminID));
+        Admin admin = adminRepository.findByAdminId(adminId)
+                .orElseThrow(() -> new UsernameNotFoundException("Could not found user" + adminId));
 
         return User.builder()
-                .username(admin.getAdminID())
+                .username(admin.getAdminId())
                 .password(admin.getPassword())
                 .roles("CUSTOMER")
                 .build();
@@ -48,7 +48,7 @@ public class AdminService implements UserDetailsService {
 
     // 아이디 중복 체크
     public boolean checkAdminID(String AdminID) {
-        return adminRepository.existsByAdminID(AdminID);
+        return adminRepository.existsByAdminId(AdminID);
     }
 
     // 회원정보 수정

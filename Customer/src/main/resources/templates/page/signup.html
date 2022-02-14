@@ -21,9 +21,9 @@
                     <div class="col-lg-8">
                         <form id="form" class="row contact_form" th:action="@{/signup}" method="post" novalidate="novalidate">
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                            <input type="hidden" name="adminID_chkflag" id="adminID_chkflag" th:value="N">
+                            <input type="hidden" name="adminId_chkflag" id="adminId_chkflag" th:value="N">
                             <div class="col-md-12 form-group p_star">
-                                <input type="text" class="form-control" id="adminID" name="adminID" placeholder="ID" maxlength="20" oninput="CheckAdminID()"/>
+                                <input type="text" class="form-control" id="adminId" name="adminId" placeholder="ID" maxlength="20" oninput="CheckAdminID()"/>
                                 <span class="id_ok">사용 가능한 아이디입니다.</span>
                                 <span class="id_already">누군가 이 아이디를 사용하고 있어요.</span>
                             </div>
@@ -69,9 +69,9 @@
 
             $("form").validate({
             submitHandler: function(form) {
-                if($('#adminID_chkflag').val() != "Y"){
+                if($('#adminId_chkflag').val() != "Y"){
                     alert("아이디를 확인해주세요.");
-                    $('#adminID').focus();
+                    $('#adminId').focus();
                     return false;
                 }
 
@@ -84,10 +84,10 @@
             },
             // 체크할 항목들의 룰 설정
             rules: {
-                adminID: {
+                adminId: {
                     required : true,
-                    minlength : 6,
-                    adminID_rule : true
+                    minlength : 4,
+                    adminId_rule : true
                 },
                 password: {
                     required : true,
@@ -117,10 +117,10 @@
             },
             //규칙체크 실패시 출력될 메시지
             messages : {
-                adminID: {
+                adminId: {
                     required : "ID를 입력해주세요.",
                     minlength : "최소 {0}글자 이상 입력해주세요.",
-                    adminID_rule : "영문 혹은 숫자만 입력해주세요."
+                    adminId_rule : "영문 혹은 숫자만 입력해주세요."
                 },
                 password: {
                     required : "비밀번호를 입력해주세요.",
@@ -154,14 +154,14 @@
         function CheckAdminID(){
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
-            var adminID = $('#adminID').val();
+            var adminId = $('#adminId').val();
 
-            if(adminID.length >= 6 && /^[a-zA-Z0-9]*$/.test(adminID)) {
+            if(adminId.length >= 4 && /^[a-zA-Z0-9]*$/.test(adminId)) {
                 // 아이디 중복 체크
                 $.ajax({
                     url:'/checkadminid',
                     type:'post', //POST 방식으로 전달
-                    data:{adminID:adminID},
+                    data:{adminId:adminId},
                     beforeSend : function(xhr)
                     {
                         /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
@@ -172,13 +172,13 @@
                         {
                             $('.id_ok').css("display","inline-block");
                             $('.id_already').css("display", "none");
-                            $('#adminID_chkflag').val("Y");
+                            $('#adminId_chkflag').val("Y");
                         }
                         else
                         {
                             $('.id_already').css("display","inline-block");
                             $('.id_ok').css("display", "none");
-                            $('#adminID_chkflag').val("N")
+                            $('#adminId_chkflag').val("N")
                         }
                     },
                     error:function(){
@@ -190,7 +190,7 @@
             {
                 $('.id_already').css("display","none");
                 $('.id_ok').css("display", "none");
-                $('#adminID_chkflag').val("N")
+                $('#adminId_chkflag').val("N")
             }
         };
     </script>

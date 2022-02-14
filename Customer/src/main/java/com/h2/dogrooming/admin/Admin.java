@@ -1,5 +1,7 @@
 package com.h2.dogrooming.admin;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.h2.dogrooming.designer.Designer;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +24,7 @@ public class Admin {
 
     @NotBlank(message = "아이디를 입력해주세요.")
     @Column(length = 40, unique = true, nullable = false)
-    private String adminID; // 아이디
+    private String adminId; // 아이디
 
     @NotBlank(message = "비밀번호를 입력해주세요.")
     @Column(length = 256, nullable = false)
@@ -55,9 +57,14 @@ public class Admin {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateDate; //수정날짜
 
-    public Admin(long adminNo, String adminID, String password, Integer type, String name, String email, String phone, Integer useState, Date registerDate, Date updateDate) {
+    @OneToOne(mappedBy = "admin")
+    @JsonManagedReference
+    private Designer designer;
+
+    @Builder
+    public Admin(long adminNo, String adminId, String password, Integer type, String name, String email, String phone, Integer useState, Date registerDate, Date updateDate, Designer designer) {
         this.adminNo = adminNo;
-        this.adminID = adminID;
+        this.adminId = adminId;
         this.password = password;
         this.type = type;
         this.name = name;
@@ -66,6 +73,7 @@ public class Admin {
         this.useState = useState;
         this.registerDate = registerDate;
         this.updateDate = updateDate;
+        this.designer = designer;
     }
 
     public Admin() {
