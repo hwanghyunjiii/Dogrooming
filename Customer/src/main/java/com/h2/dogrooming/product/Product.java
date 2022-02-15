@@ -19,7 +19,7 @@ public class Product {
 
     @Id
     @GeneratedValue
-    private Integer productId;
+    private long productId;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "adminNo")

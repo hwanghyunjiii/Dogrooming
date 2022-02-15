@@ -15,10 +15,10 @@ public class Review {
 
     @Id
     @GeneratedValue
-    private Integer reviewId;
+    private long reviewId;
 
     @Column(nullable = false)
-    private Integer reservationId;
+    private long reservationId;
 
     @Column(length = 256)
     private String content;
@@ -38,7 +38,7 @@ public class Review {
 
     public Review(){}
 
-    public Review(Integer reviewId, Integer reservationId, String content, String file, Integer useState, Date registerDate, Date updateDate){
+    public Review(long reviewId, long reservationId, String content, String file, Integer useState, Date registerDate, Date updateDate){
         this.reviewId = reviewId;
         this.reservationId = reservationId;
         this.content = content;

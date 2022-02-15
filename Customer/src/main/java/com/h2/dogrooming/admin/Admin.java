@@ -3,13 +3,11 @@ package com.h2.dogrooming.admin;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.h2.dogrooming.designer.Designer;
-import com.h2.dogrooming.designer.DesignerAddress;
 import com.h2.dogrooming.reservation.Reservation;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.relational.core.sql.In;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
