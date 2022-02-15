@@ -18,6 +18,8 @@ import java.lang.*;
 @Controller
 @RequestMapping("/designer")
 public class DesignerController {
+
+    @Autowired
     private DesignerService designerService;
 
     public DesignerController(DesignerService designerService){

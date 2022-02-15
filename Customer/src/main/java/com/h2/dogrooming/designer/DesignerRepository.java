@@ -29,7 +29,7 @@ public interface DesignerRepository extends JpaRepository<Designer, Long> {
     Slice<Designer> findAllByNameContaining(@Param("name")String name, Pageable pageable);
 
     @QueryHints(value = @QueryHint(name = "org.hibernate.readOnly", value = "true"))
-    @Query(value = "select a from Designer a where a.name like :keyword or a.region like :keyword", nativeQuery = true)
+    @Query("select a from Designer a where a.name like :keyword or a.region like :keyword")
     Slice<Designer> findAllByNameContainingOrRegionContaining(@Param("keyword") String keyword, Pageable pageable);
 
     Designer findDesignerByDesignerId(long designerId);

@@ -1,26 +1,27 @@
 package com.h2.dogrooming.designer;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.h2.dogrooming.admin.Admin;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Getter
-@Setter
-public class Designer{
+public class Designer {
 
     @Id
     @Column(nullable = false)
     @GeneratedValue
-    private Integer designerId;
+    private long designerId;
 
-    @OneToOne (fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "adminNo")
+    @JsonBackReference
     private Admin admin; // 아이디
 
     @Column(length = 256)
@@ -35,6 +36,9 @@ public class Designer{
     @Column(length = 50)
     private String name; // 이름
 
+    @Column(length = 256)
+    private String region; // 서비스지역
+
     @Column(length = 1, nullable = false)
     private Integer useState; // 상태 (0: 정상  1: 비정상)
 
@@ -47,15 +51,26 @@ public class Designer{
 
     public Designer(){}
 
-    public Designer(Integer designerId, Admin admin, String profile, String title, String content, String name, Integer useState, Date registerDate, Date updateDate) {
+    @Builder
+    public Designer(long designerId, Admin admin, String profile, String title, String content, String name, String region, Integer useState, Date registerDate, Date updateDate) {
         this.designerId = designerId;
         this.admin = admin;
         this.profile = profile;
         this.title = title;
         this.content = content;
         this.name = name;
+        this.region = region;
         this.useState = useState;
         this.registerDate = registerDate;
         this.updateDate = updateDate;
+    }
+
+    public Designer(DesignerDTO designerDTO){
+        designerId = designerDTO.getDesignerId();
+        profile = designerDTO.getProfile();
+        title = designerDTO.getTitle();
+        content = designerDTO.getContent();
+        name = designerDTO.getName();
+        useState = designerDTO.getUseState();
     }
 }
