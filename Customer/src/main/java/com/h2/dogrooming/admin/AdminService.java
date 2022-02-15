@@ -28,7 +28,7 @@ public class AdminService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String adminId) throws UsernameNotFoundException {
 
-        Admin admin = adminRepository.findByAdminId(adminId)
+        Admin admin = adminRepository.findByAdminIdAndType(adminId, 1)
                 .orElseThrow(() -> new UsernameNotFoundException("Could not found user" + adminId));
 
         return User.builder()
@@ -37,7 +37,6 @@ public class AdminService implements UserDetailsService {
                 .roles("CUSTOMER")
                 .build();
     }
-
 
     // 아이디 중복 체크
     public boolean checkAdminId(String adminId) {
