@@ -15,7 +15,7 @@
     <!-- slider Area End-->
 
     <!--================login_part Area =================-->
-    <form action="/login" method="post" id="form">
+    <form action="/login" th:action="@{/login}" method="post" id="form">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
         <section class="login_part">
             <div class="container">
