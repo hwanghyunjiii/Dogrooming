@@ -18,7 +18,7 @@
                             <div class="main-menu f-right d-none d-lg-block">
                                 <nav>
                                     <ul id="navigation">
-                                        <li><a th:href="@{designer_search}">디자이너 찾기</a></li>
+                                        <li><a th:href="@{/designer/list}">디자이너 찾기</a></li>
                                         <li><a th:href="@{reservation}">예약 조회</a></li>
                                         <li><a th:href="@{mypage}">마이페이지</a></li>
                                     </ul>
@@ -27,8 +27,8 @@
                         </div>
                         <div class="col-xl-2 col-lg-2 col-md-3 col-sm-3 fix-card">
                             <ul class="header-right f-right d-none d-lg-block d-flex justify-content-between">
-                                <li class="d-none d-lg-block"> <a sec:authorize="isAnonymous()" th:href="@{login}" class="btn header-btn">로그인</a></li>
-                                <li class="d-none d-lg-block"> <a sec:authorize="isAuthenticated()" th:href="@{logout}" class="btn header-btn">로그아웃</a></li>
+                                <li class="d-none d-lg-block"> <a sec:authorize="isAnonymous()" th:href="@{/login}" class="btn header-btn">로그인</a></li>
+                                <li class="d-none d-lg-block"> <a sec:authorize="isAuthenticated()" th:href="@{/logout}" class="btn header-btn">로그아웃</a></li>
                             </ul>
                         </div>
                         <!-- Mobile Menu -->
